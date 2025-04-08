@@ -3,9 +3,9 @@ import React from 'react';
 import Button from '../components/Button';
 import './LoginIntro.css';
 import logo from '../assets/logo.png';
+
 const LoginIntro = () => {
   const navigate = useNavigate();
-
   const handleLoginClick = () => {
     navigate('/login');
   };
