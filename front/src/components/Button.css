@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .btn {
   width: 358px;
   height: 55px;
