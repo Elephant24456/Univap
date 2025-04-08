@@ -1,14 +1,16 @@
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginIntro from '../pages/LoginIntro';
 // import Login from '../pages/Login';
 
-const AppRouter = () => {
+const Router = () => {
   return (
-    <Routes>
-      <Route path="/" element={<LoginIntro />} />
-      {/* <Route path="/login" element={<Login />} /> */}
-    </Routes>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginIntro />} />
+        {/* <Route path="/login" element={<Login />} /> */}
+      </Routes>
+    </BrowserRouter>
   );
 };
 
-export default AppRouter;
+export default Router;
