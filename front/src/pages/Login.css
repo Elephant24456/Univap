@@ -1,0 +1,64 @@
+/* 전체 로그인 화면 */
+.login-container {
+  max-width: 375px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  min-height: 100vh;
+  position: relative;
+  background-color: #fff;
+  gap: 12px;
+}
+
+/* 로고 */
+.text-logo {
+  width: 120px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+/* 로그인 타이틀 */
+.login-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+/* 뒤로가기 버튼 */
+.back-button {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 10px;
+  cursor: pointer;
+}
+
+/* 이메일 / 비밀번호 */
+.login-container p {
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 8px 0 0px;
+  color: #333;
+}
+
+/*  회원가입*/
+.login-container > p:last-child {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 24px;
+  color: #333;
+}
+
+.login-container > p:last-child span {
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  border-bottom: 1px solid #333;
+}
