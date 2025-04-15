@@ -1,0 +1,34 @@
+.sign-up-container {
+  max-width: 375px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  min-height: 100vh;
+  position: relative;
+  background-color: #fff;
+}
+
+/* 로고 */
+.text-logo {
+  width: 120px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+/* 닉네임, 이메일, 비번, 비번확인 */
+.sign-up-container p {
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 8px 0 4px;
+  color: #333;
+}
+
+/* 회원가입 버튼 */
+Button {
+  margin-top: 20px;
+}
