@@ -1,0 +1,52 @@
+.chat-list-container {
+  padding: 16px;
+}
+
+.chat-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.chat-profile {
+  width: 50px; /* 원하는 크기로 조정 */
+  height: 50px; /* 원하는 크기로 조정 */
+  border-radius: 50%; /* 원형으로 만들기 */
+  overflow: hidden; /* 이미지가 영역 밖으로 나가지 않도록 */
+  margin: 10px;
+}
+
+.chat-profile img {
+  width: 100%; /* 부모 요소에 꽉 채우도록 설정 */
+  height: 100%; /* 부모 요소에 꽉 채우도록 설정 */
+  object-fit: cover; /* 이미지 비율 유지하면서 채우기 */
+}
+
+.chat-details {
+  flex-grow: 1;
+}
+
+.chat-header {
+  display: flex;
+}
+
+.chat-name {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.chat-time {
+  color: #888;
+  font-size: 14px;
+}
+
+.chat-message {
+  margin-top: 5px;
+  color: #333;
+}
+
+.chat-date {
+  color: #888;
+  font-size: 14px;
+  text-align: right;
+}
