@@ -16,6 +16,33 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  // 이메일 인증
+  const [authCodeSent, setAuthCodeSent] = useState(false);
+  const [authCode, setAuthCode] = useState('');
+  const [inputAuthCode, setInputAuthCode] = useState('');
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+
+  const handleVerifyCode = () => {
+    if (inputAuthCode === authCode) {
+      alert('이메일 인증 완료!');
+      setIsEmailVerified(true);
+    } else {
+      alert('인증번호가 일치하지 않습니다.');
+    }
+  };
+
+  const handleSendAuthCode = () => {
+    if (!email) {
+      alert('이메일을 입력해주세요.');
+      return;
+    }
+
+    // 백엔드 연결 전, 임시 코드
+    setAuthCodeSent(true);
+    setAuthCode('123456');
+    alert('임시 인증번호 "123456"이 발송되었습니다.');
+  };
+
   const handleSignUp = () => {
     // 유효성 검사
     if (!nickname || !email || !password || !confirmPassword) {
@@ -58,14 +85,41 @@ const SignUp = () => {
       />
 
       {/* 이메일 */}
-      <p>이메일</p>
-      <InputField
-        label="이메일"
-        placeholder="이메일을 입력해주세요."
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
 
+      <p>이메일</p>
+      <div className="email-auth">
+        <InputField
+          label="이메일"
+          placeholder="이메일을 입력해주세요."
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Button
+          label="인증요청"
+          onClick={handleSendAuthCode}
+          variant="secondary"
+          className="num-check"
+        />
+      </div>
+
+      {authCodeSent && !isEmailVerified && (
+        <>
+          <p>인증번호 입력</p>
+          <div className="email-auth">
+            <InputField
+              placeholder="인증번호를 입력해주세요."
+              value={inputAuthCode}
+              onChange={(e) => setInputAuthCode(e.target.value)}
+            />
+            <Button
+              label="확인"
+              onClick={handleVerifyCode}
+              variant="secondary"
+              className="num-check"
+            />
+          </div>
+        </>
+      )}
       {/* 비밀번호 */}
       <p>비밀번호</p>
       <InputField

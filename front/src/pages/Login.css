@@ -35,12 +35,12 @@
   top: 16px;
   left: 16px;
   width: 10px;
-  cursor: pointer;
 }
 
 /* 이메일 / 비밀번호 */
 .login-container p {
   width: 100%;
+  box-sizing: border-box;
   text-align: left;
   font-size: 16px;
   font-weight: bold;
@@ -61,4 +61,7 @@
   color: #333;
   cursor: pointer;
   border-bottom: 1px solid #333;
+}
+.input-field {
+  margin-bottom: 0px;
 }

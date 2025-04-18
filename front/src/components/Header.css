@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 16px;
+  padding: 12px 0 16px;
   font-size: 20px;
   font-weight: 600;
   color: #333;
