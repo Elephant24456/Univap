@@ -11,6 +11,10 @@
   z-index: 1000;
 }
 
+h3 {
+  font-size: 18px;
+}
+
 .modal-content {
   background: white;
   padding: 24px;
@@ -25,5 +29,19 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+}
+
+.nickname-input {
+  width: 282px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+
+  cursor: pointer;
+  padding-right: 20px;
 }
