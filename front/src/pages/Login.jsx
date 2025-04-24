@@ -66,7 +66,6 @@ const Login = () => {
 
       {/* 회원가입 */}
       <p>
-        {/* TODO:회원가입 navigate추가하기 */}
         계정이 없으신가요?{' '}
         <span onClick={() => navigate('/signup')}>회원가입</span>
       </p>

@@ -9,10 +9,11 @@ const InputField = ({
   name,
   disabled = false,
   autoComplete = 'off',
+  className,
 }) => {
   return (
     <input
-      className="input-field"
+      className={`input-field ${className || ''}`}
       type={type}
       name={name}
       placeholder={placeholder}

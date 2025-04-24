@@ -6,13 +6,19 @@ import chatGray from '../assets/chat-gray.png';
 import chatOrange from '../assets/chat-orange.png';
 import profileGray from '../assets/profile-gray.png';
 import profileOrange from '../assets/profile-orange.png';
+import { useNavigate } from 'react-router-dom';
 
 const BottomNavBar = ({ activeTab, setActiveTab }) => {
+  const navigate = useNavigate();
+
   return (
     <nav className="bottom-nav">
       <button
         className={activeTab === 'home' ? 'active' : ''}
-        onClick={() => setActiveTab('home')}
+        onClick={() => {
+          setActiveTab('home');
+          navigate('/home');
+        }}
       >
         <img
           src={activeTab === 'home' ? homeOrange : homeGray}
@@ -21,9 +27,13 @@ const BottomNavBar = ({ activeTab, setActiveTab }) => {
         />
         <span>홈</span>
       </button>
+
       <button
         className={activeTab === 'chat' ? 'active' : ''}
-        onClick={() => setActiveTab('chat')}
+        onClick={() => {
+          setActiveTab('chat');
+          navigate('/chat');
+        }}
       >
         <img
           src={activeTab === 'chat' ? chatOrange : chatGray}
@@ -32,9 +42,13 @@ const BottomNavBar = ({ activeTab, setActiveTab }) => {
         />
         <span>채팅</span>
       </button>
+
       <button
         className={activeTab === 'mypage' ? 'active' : ''}
-        onClick={() => setActiveTab('mypage')}
+        onClick={() => {
+          setActiveTab('mypage');
+          navigate('/myPage');
+        }}
       >
         <img
           src={activeTab === 'mypage' ? profileOrange : profileGray}

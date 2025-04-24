@@ -18,13 +18,12 @@ const Home = () => {
       <Header username="독수리" />
 
       <main className="home-content">
-        {activeTab === 'home' && (
-          <div>
-            홈 화면입니다. <FloatingActionButton onClick={handleFabClick} />
-          </div>
-        )}
-        {activeTab === 'chat' && <div>채팅 화면입니다.</div>}
-        {activeTab === 'mypage' && <div>마이페이지 화면입니다.</div>}
+        <div>
+          {/* 홈화면에 글쓰기 페이지 구현으로 인해 rab 버튼 간단하게 생성하고 글쓰기 */}
+          {/* 페이지 라우터만 해놨습니다. */}
+          {/* 이어서 home 작업하시면 될거같습니다. */}
+          <FloatingActionButton onClick={handleFabClick} />
+        </div>
       </main>
 
       <BottomNavBar activeTab={activeTab} setActiveTab={setActiveTab} />
