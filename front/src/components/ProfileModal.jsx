@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import './ProfileModal.css';
 import Button from '../components/Button';
 import InputField from './InputField';
+import exitIcon from '../assets/exit.png';
 
 const ProfileModal = ({ onClose }) => {
   const [profileImage, setProfileImage] = useState(null);
@@ -22,8 +23,9 @@ const ProfileModal = ({ onClose }) => {
     <div className="modal-backdrop">
       <div className="modal-content">
         <button className="close-btn" onClick={onClose}>
-          ×
+          <img src={exitIcon} />
         </button>
+
         <h3>프로필 수정</h3>
 
         <div className="profile-body">
