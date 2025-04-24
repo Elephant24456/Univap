@@ -1,0 +1,30 @@
+.header-post-summary {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.post-title {
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.post-content {
+  color: #666;
+  margin-bottom: 5px; /* 내용과 시간 간격 */
+  /* --- 내용을 한 줄로 줄이고 ...으로 표시하는 스타일 --- */
+  white-space: nowrap; /* 줄바꿈 방지 */
+  overflow: hidden; /* 넘치는 내용 숨김 */
+  text-overflow: ellipsis; /* 넘치는 내용을 ...으로 표시 */
+  font-size: 12px;
+}
+
+.post-time {
+  color: #999;
+  text-align: right;
+  font-size: 12px;
+}
