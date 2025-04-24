@@ -1,0 +1,36 @@
+.message-input {
+  display: flex;
+  align-items: center; /* 수직 중앙 정렬 */
+  width: 100%; /* 좌우 여백 없이 꽉 차게 */
+  padding: 0; /* 패딩 제거 */
+  margin: 0; /* 마진 제거 */
+  position: relative; /* 버튼 위치 조정을 위해 추가 */
+}
+
+.message-input textarea {
+  flex-grow: 1; /* 입력창이 남은 공간 모두 차지 */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  background-color: #d9d9d9;
+  margin: 0; /* 마진 제거 */
+}
+
+.message-input button {
+  position: absolute; /* 입력창 내에 배치 */
+  top: 50%; /* 수직 중앙 정렬 */
+  right: 5px; /* 오른쪽 여백 */
+  transform: translateY(-50%); /* 수직 중앙 정렬 보정 */
+  padding: 5px 9px; /* 예시: 상하 5px, 좌우 10px */
+  border: none;
+  background-color: #fc703b; /* 기본 배경색 */
+  color: white;
+  border-radius: 30px; /* 둥근 모서리 유지 */
+  cursor: pointer;
+  transition: background-color 0.1s ease; /* 색상 변화에 부드러운 효과 추가 (선택 사항) */
+}
+
+/* 버튼을 눌렀을 때 (active 상태) 스타일 */
+.message-input button:active {
+  background-color: #757575; /* 눌렀을 때 바뀔 색상 */
+}
