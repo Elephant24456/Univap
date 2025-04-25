@@ -1,0 +1,24 @@
+/* Message.css */
+.message {
+  display: flex;
+  margin-bottom: 10px; /* 메시지 간 간격 */
+  word-break: break-word; /* 긴 단어 줄바꿈 */
+}
+
+.message p {
+  padding: 8px 22px; /* 메시지 내용 패딩 */
+  border-radius: 20px; /* 둥근 모서리 */
+  background-color: #ffa175; /* 기본 배경색 */
+}
+
+.sender {
+  justify-content: flex-end; /* 보낸 메시지 오른쪽 정렬 */
+}
+
+.sender p {
+  background-color: #d9d9d9; /* 보낸 메시지 배경색 */
+}
+
+.receiver {
+  justify-content: flex-start; /* 받은 메시지 왼쪽 정렬 */
+}
