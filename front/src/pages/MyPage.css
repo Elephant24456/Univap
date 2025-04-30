@@ -1,27 +1,3 @@
-/* .mypage {
-  max-width: 375px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  padding: 40px 20px;
-  background-color: #fff;
-  color: #333;
-} */
-
-.mypage {
-  max-width: 375px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24px 16px;
-  box-sizing: border-box;
-  min-height: 100vh;
-  position: relative;
-  background-color: #fff;
-  gap: 12px;
-}
-
 .profile {
   width: 100%;
   margin-bottom: 24px;

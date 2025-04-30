@@ -7,6 +7,7 @@ import openEye from '../assets/open-eye.png';
 import closeEye from '../assets/close-eye.png';
 import backIcon from '../assets/back.png';
 import './Login.css';
+import '../index.css';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
+    <div className="page-layout login-container">
       {/* 뒤로가기 버튼 */}
       <img
         src={backIcon}

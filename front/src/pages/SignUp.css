@@ -1,21 +1,8 @@
-.sign-up-container {
-  max-width: 375px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24px 16px;
-  box-sizing: border-box;
-  min-height: 100vh;
-  position: relative;
-  background-color: #fff;
-}
-
 /* 로고 */
 .text-logo {
   width: 120px;
   height: auto;
-  margin-top: 50px;
+  margin-top: 10px;
   margin-bottom: 8px;
 }
 
@@ -25,7 +12,7 @@
   text-align: left;
   font-size: 16px;
   font-weight: bold;
-  margin: 20px 0 4px;
+  margin: 10px 0px 0 4px;
   color: #333;
 }
 
@@ -42,7 +29,7 @@ Button {
 .email-auth {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   width: 100%;
 }
 
@@ -52,8 +39,12 @@ Button {
   padding: 0 8px;
   font-size: 16px;
   border-radius: 16px;
-  width: 150px;
+  width: 130px;
   background-color: #fff;
   color: #929292;
   border: 1px solid #929292;
+}
+
+.back-button {
+  margin-top: 10px;
 }

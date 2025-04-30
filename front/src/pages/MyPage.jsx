@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import profileGray from '../assets/profile-gray.png';
 import ProfileModal from '../components/ProfileModal';
 import './MyPage.css';
+import '../index.css';
 
 const dummyPosts = [
   {
@@ -24,7 +25,7 @@ const MyPage = () => {
   const myPosts = dummyPosts.filter((post) => post.author === username);
 
   return (
-    <div className="mypage">
+    <div className="page-layout mypage">
       <Header username="독수리" />
       <section className="profile">
         <div className="pic-name">
