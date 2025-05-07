@@ -1,5 +1,6 @@
-import React from 'react';
-import fab from '../assets/fab.png';
+import React from "react";
+import fab from "../assets/fab.png";
+import "./FloatingActionButton.css";
 
 const FloatingActionButton = ({ onClick }) => {
   return (
