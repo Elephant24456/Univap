@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import Header from '../components/Header';
-import BottomNavBar from '../components/BottomNavBar';
-import './Home.css';
-import FloatingActionButton from '../pages/FloatingActionButton';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import Header from "../components/Header";
+import BottomNavBar from "../components/BottomNavBar";
+import "./Home.css";
+import FloatingActionButton from "../components/FloatingActionButton";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState("home");
 
   const navigate = useNavigate();
   const handleFabClick = () => {
-    navigate('/write');
+    navigate("/write");
   };
 
   return (
