@@ -1,0 +1,26 @@
+.fab-button {
+  position: fixed; /* 화면 뷰포트에 고정 */
+  bottom: 70px;
+  right: 20px;
+  z-index: 1000;
+
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #fc703b;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3);
+}
+
+.fab-icon {
+  width: 60%;
+  height: 60%;
+}
+
+.fab-button:active {
+  background-color: #757575; /* 눌렀을 때 색상 변경 */
+}
