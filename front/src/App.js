@@ -1,3 +1,4 @@
+/*
 import logo from './logo.svg';
 import Test from '../src/components/Test';
 import React from 'react';
@@ -24,6 +25,21 @@ function App() {
       <AppRouter />
     </div>
   );
+}
+
+export default App;
+
+ */
+
+import React from 'react';
+import Router from './routes/Router'; // 라우팅 컴포넌트 불러오기
+
+function App() {
+    return (
+        <div className="App">
+            <Router />  {/* ✅ 이제 이게 모든 라우팅을 담당함 */}
+        </div>
+    );
 }
 
 export default App;
