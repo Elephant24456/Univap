@@ -1,4 +1,4 @@
-* {
+/* * {
   box-sizing: border-box;
 }
 
@@ -13,7 +13,7 @@
   min-height: 100vh;
   position: relative;
   background-color: #fff;
-}
+} */
 
 /* 제목 */
 .title {

@@ -1,18 +1,3 @@
-/* 전체 로그인 화면 */
-.login-container {
-  max-width: 375px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24px 16px;
-  box-sizing: border-box;
-  min-height: 100vh;
-  position: relative;
-  background-color: #fff;
-  gap: 12px;
-}
-
 /* 로고 */
 .text-logo {
   width: 120px;

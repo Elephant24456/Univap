@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import backIcon from '../assets/back.png';
 import './Write.css';
+import '../index.css';
 import './Home';
 import Button from '../components/Button';
 
@@ -11,7 +12,7 @@ const Write = () => {
     navigate('/home');
   };
   return (
-    <div className="write">
+    <div className="page-layout write">
       <section className="container">
         <img
           src={backIcon}

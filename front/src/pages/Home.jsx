@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import BottomNavBar from '../components/BottomNavBar';
-import './Home.css';
+import '../index.css';
+
 import FloatingActionButton from '../pages/FloatingActionButton';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,7 +15,7 @@ const Home = () => {
   };
 
   return (
-    <div className="home">
+    <div className="page-layout">
       <Header username="독수리" />
 
       <main className="home-content">
