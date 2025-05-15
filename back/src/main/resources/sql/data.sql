@@ -1,8 +1,10 @@
+USE capstone_db;
+
 INSERT INTO user (email, password, univ, profile_img, nickname)
 VALUES(
-       'test@test.com',
+       'haerin@newjeans.com',
        '12345678',
-       '한국대학교',
+       '뉴진스대학교',
        '/images/test.png',
-       'Test'
+       '해린냥이'
 );
