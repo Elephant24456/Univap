@@ -9,4 +9,9 @@ DELETE FROM user WHERE id = 1; #특정 유저 삭제
 ALTER TABLE user AUTO_INCREMENT = 1; #AUTO_INCREMENT 초기화
 
 SELECT * FROM user
-WHERE email = 'test@test.com' AND password = '12345678'
+WHERE email = 'test@test.com' AND password = '12345678';
+
+select * from user
+where email = 'haerin@newjeans.com' and password = '12345678';
+
+commit;
