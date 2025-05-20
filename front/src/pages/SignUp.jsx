@@ -8,159 +8,162 @@ import closeEye from '../assets/close-eye.png';
 import backIcon from '../assets/back.png';
 import './SignUp.css';
 import '../index.css';
+import axios from 'axios';
 
 const SignUp = () => {
-  const navigate = useNavigate();
-  const [nickname, setNickname] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [confirmPassword, setConfirmPassword] = useState('');
+    const navigate = useNavigate();
+    const [nickname, setNickname] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [univ, setUniv] = useState(''); // ✅ 대학교명 state 추가
 
-  // 이메일 인증
-  const [authCodeSent, setAuthCodeSent] = useState(false);
-  const [authCode, setAuthCode] = useState('');
-  const [inputAuthCode, setInputAuthCode] = useState('');
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
+    const [authCodeSent, setAuthCodeSent] = useState(false);
+    const [authCode, setAuthCode] = useState('');
+    const [inputAuthCode, setInputAuthCode] = useState('');
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
 
-  const handleVerifyCode = () => {
-    if (inputAuthCode === authCode) {
-      alert('이메일 인증 완료!');
-      setIsEmailVerified(true);
-    } else {
-      alert('인증번호가 일치하지 않습니다.');
-    }
-  };
+    const handleVerifyCode = async () => {
+        if (!email || !inputAuthCode) {
+            alert('이메일과 인증번호를 모두 입력해주세요.');
+            return;
+        }
 
-  const handleSendAuthCode = () => {
-    if (!email) {
-      alert('이메일을 입력해주세요.');
-      return;
-    }
+        if (!univ) {
+            alert('대학교명을 먼저 입력해주세요.');
+            return;
+        }
 
-    // 백엔드 연결 전, 임시 코드
-    setAuthCodeSent(true);
-    setAuthCode('123456');
-    alert('임시 인증번호 "123456"이 발송되었습니다.');
-  };
+        try {
+            const res = await axios.post('http://localhost:8080/api/univ/verify', {
+                email,
+                univName: univ,
+                code: inputAuthCode,
+            });
 
-  const handleSignUp = () => {
-    // 유효성 검사
-    if (!nickname || !email || !password || !confirmPassword) {
-      alert('모든 항목을 입력해주세요.');
-      return;
-    }
+            if (res.data.includes('이메일 인증 성공')) {
+                alert('이메일 인증 완료!');
+                setIsEmailVerified(true);
+            } else {
+                alert('인증 실패: ' + res.data);
+            }
+        } catch (error) {
+            alert('인증 실패: ' + (error.response?.data || error.message));
+        }
+    };
 
-    if (password !== confirmPassword) {
-      alert('비밀번호가 일치하지 않습니다.');
-      return;
-    }
+    const handleSendAuthCode = async () => {
+        if (!email) {
+            alert('이메일을 입력해주세요.');
+            return;
+        }
 
-    // TODO: 서버 회원가입 요청 처리 로직
+        if (!univ) {
+            alert('대학교명을 입력해주세요.');
+            return;
+        }
 
-    console.log('회원가입 성공!');
-    navigate('/home'); // 홈 이동, 이름 변경될 수 있음
-  };
+        try {
+            const res = await axios.post('http://localhost:8080/api/univ/request', {
+                email,
+                univName: univ, // ← 수정
+            });
 
-  return (
-    <div className="page-layout sign-up-container">
-      {/* 뒤로가기 버튼 */}
-      <img
-        src={backIcon}
-        alt="뒤로가기"
-        className="back-button"
-        onClick={() => navigate('/')}
-      />
+            alert(res.data);
+            setAuthCodeSent(true);
+        } catch (error) {
+            if (error.response) {
+                const message = typeof error.response.data === 'string'
+                    ? error.response.data
+                    : error.response.data.message || JSON.stringify(error.response.data);
+                alert(message);
+            } else {
+                alert('요청 중 오류 발생: ' + error.message);
+            }
+        }
+    };
 
-      {/* 로고 */}
-      <img src={logo} alt="Univap 로고" className="text-logo" />
-      <h2 className="sign-up-title">회원가입</h2>
 
-      {/* 닉네임 */}
-      <p>닉네임</p>
-      <InputField
-        label="닉네임"
-        placeholder="닉네임을 입력해주세요."
-        value={nickname}
-        onChange={(e) => setNickname(e.target.value)}
-      />
 
-      {/* 이메일 */}
 
-      <p>이메일</p>
-      <div className="email-auth">
-        <InputField
-          label="이메일"
-          placeholder="이메일을 입력해주세요."
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Button
-          label="인증요청"
-          onClick={handleSendAuthCode}
-          variant="secondary"
-          className="num-check"
-        />
-      </div>
+    const handleSignUp = async () => {
+        if (!nickname || !email || !password || !confirmPassword || !univ) {
+            alert('모든 항목을 입력해주세요.');
+            return;
+        }
 
-      {authCodeSent && !isEmailVerified && (
-        <>
-          <p>인증번호 입력</p>
-          <div className="email-auth">
+        if (password !== confirmPassword) {
+            alert('비밀번호가 일치하지 않습니다.');
+            return;
+        }
+
+        try {
+            const res = await axios.post('http://localhost:8080/api/user/signup', {
+                email,
+                password,
+                nickname,
+                univ, // ✅ 대학교명 추가
+            });
+
+            alert(res.data); // ex) "회원가입 성공"
+            navigate('/home');
+        } catch (error) {
+            alert('회원가입 실패: ' + (error.response?.data || error.message));
+        }
+    };
+
+    return (
+        <div className="page-layout sign-up-container">
+            <img src={backIcon} alt="뒤로가기" className="back-button" onClick={() => navigate('/')} />
+            <img src={logo} alt="Univap 로고" className="text-logo" />
+            <h2 className="sign-up-title">회원가입</h2>
+
+            <p>닉네임</p>
+            <InputField value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="닉네임" />
+
+            <p>대학교명</p>
+            <InputField value={univ} onChange={(e) => setUniv(e.target.value)} placeholder="대학교명" />
+
+            <p>이메일</p>
+            <div className="email-auth">
+                <InputField value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일" />
+                <Button label="인증요청" onClick={handleSendAuthCode} variant="secondary" className="num-check" />
+            </div>
+
+            {authCodeSent && !isEmailVerified && (
+                <>
+                    <p>인증번호 입력</p>
+                    <div className="email-auth">
+                        <InputField value={inputAuthCode} onChange={(e) => setInputAuthCode(e.target.value)} placeholder="인증번호" />
+                        <Button label="확인" onClick={handleVerifyCode} variant="secondary" className="num-check" />
+                    </div>
+                </>
+            )}
+
+            <p>비밀번호</p>
             <InputField
-              placeholder="인증번호를 입력해주세요."
-              value={inputAuthCode}
-              onChange={(e) => setInputAuthCode(e.target.value)}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="비밀번호"
+                type={showPassword ? 'text' : 'password'}
+                icon={<img src={showPassword ? closeEye : openEye} alt="비밀번호 보기" className="password-toggle-icon" />}
+                onIconClick={() => setShowPassword((prev) => !prev)}
             />
-            <Button
-              label="확인"
-              onClick={handleVerifyCode}
-              variant="secondary"
-              className="num-check"
+
+            <p>비밀번호 확인</p>
+            <InputField
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="비밀번호 확인"
+                type={showPassword ? 'text' : 'password'}
+                icon={<img src={showPassword ? closeEye : openEye} alt="비밀번호 보기" className="password-toggle-icon" />}
+                onIconClick={() => setShowPassword((prev) => !prev)}
             />
-          </div>
-        </>
-      )}
-      {/* 비밀번호 */}
-      <p>비밀번호</p>
-      <InputField
-        label="비밀번호"
-        placeholder="비밀번호를 입력해주세요."
-        type={showPassword ? 'text' : 'password'}
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        icon={
-          <img
-            src={showPassword ? closeEye : openEye}
-            alt="비밀번호 보기"
-            className="password-toggle-icon"
-          />
-        }
-        onIconClick={() => setShowPassword((prev) => !prev)}
-      />
 
-      {/* 비밀번호 확인 */}
-      <p>비밀번호 확인</p>
-      <InputField
-        label="비밀번호 확인"
-        placeholder="비밀번호를 한번 더 입력해주세요."
-        type={showPassword ? 'text' : 'password'}
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        icon={
-          <img
-            src={showPassword ? closeEye : openEye}
-            alt="비밀번호 보기"
-            className="password-toggle-icon"
-          />
-        }
-        onIconClick={() => setShowPassword((prev) => !prev)}
-      />
-
-      {/* 로그인 */}
-      <Button label="회원가입" onClick={handleSignUp} variant="primary" />
-    </div>
-  );
+            <Button label="회원가입" onClick={handleSignUp} variant="primary" />
+        </div>
+    );
 };
 
 export default SignUp;
