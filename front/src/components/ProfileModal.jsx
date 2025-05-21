@@ -4,15 +4,23 @@ import Button from '../components/Button';
 import InputField from './InputField';
 import exitIcon from '../assets/exit.png';
 
-const ProfileModal = ({ onClose }) => {
+const ProfileModal = ({ onClose, onNicknameChange, onImageChange }) => {
   const [profileImage, setProfileImage] = useState(null);
   const [nickname, setNickname] = useState('');
   const fileInputRef = useRef(null);
 
   // 기존 닉네임을 불러와서 초기값으로 설정
   useEffect(() => {
+    const savedImage = localStorage.getItem('profileImage');
+    if (savedImage) setProfileImage(savedImage);
     const storedNickname = localStorage.getItem('nickname');
     if (storedNickname) setNickname(storedNickname);
+  }, []);
+
+  // 기존 프로필 이미지를 불러와서 초기값으로 설정
+  useEffect(() => {
+    const savedImage = localStorage.getItem('profileImage');
+    if (savedImage) setProfileImage(savedImage);
   }, []);
 
   const handleImageClick = () => {
@@ -22,16 +30,23 @@ const ProfileModal = ({ onClose }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfileImage(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64 = reader.result;
+        setProfileImage(base64);
+        localStorage.setItem('profileImage', base64);
+        onImageChange(base64);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const handleComplete = () => {
     if (nickname.trim()) {
-      localStorage.setItem('nickname', nickname); // 새 닉네임 저장
+      localStorage.setItem('nickname', nickname);
+      onNicknameChange(nickname);
     }
-    onClose(); // 모달 닫기
-    window.location.reload(); // 새로고침해서 반영되도록
+    onClose();
   };
 
   return (
@@ -50,6 +65,7 @@ const ProfileModal = ({ onClose }) => {
             className="avatar"
             onClick={handleImageClick}
           />
+
           <input
             type="file"
             accept="image/*"

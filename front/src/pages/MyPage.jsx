@@ -19,14 +19,14 @@ const dummyPosts = [
 
 const MyPage = () => {
   const [nickname, setNickname] = useState('');
+  const [profileImage, setProfileImage] = useState(''); // ✅ 프로필 이미지 상태 추가
   const [activeTab, setActiveTab] = useState('mypage');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    // 로그인한 사용자만 접근 가능하므로, nickname은 항상 존재한다고 가정
     const storedNickname = localStorage.getItem('nickname');
+    const storedImage = localStorage.getItem('profileImage');
 
-    // 혹시라도 토큰 없이 들어온 경우 방어용
     if (!storedNickname) {
       alert('로그인이 필요합니다.');
       window.location.href = '/login';
@@ -34,7 +34,18 @@ const MyPage = () => {
     }
 
     setNickname(storedNickname);
+    if (storedImage) setProfileImage(storedImage); // ✅ 이미지 불러오기
   }, []);
+
+  const handleNicknameChange = (newNickname) => {
+    setNickname(newNickname);
+    localStorage.setItem('nickname', newNickname);
+  };
+
+  const handleImageChange = (newImage) => {
+    setProfileImage(newImage);
+    localStorage.setItem('profileImage', newImage);
+  };
 
   const myPosts = dummyPosts.filter((post) => post.author === nickname);
 
@@ -44,7 +55,11 @@ const MyPage = () => {
 
       <section className="profile">
         <div className="pic-name">
-          <img src={profileGray} alt="아바타" className="avatar" />
+          <img
+            src={profileImage || profileGray}
+            alt="아바타"
+            className="avatar"
+          />
           <h2 className="nickname">{nickname}</h2>
         </div>
         <Button
@@ -54,7 +69,13 @@ const MyPage = () => {
         />
       </section>
 
-      {isModalOpen && <ProfileModal onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <ProfileModal
+          onClose={() => setIsModalOpen(false)}
+          onNicknameChange={handleNicknameChange}
+          onImageChange={handleImageChange}
+        />
+      )}
 
       <section className="my-posts">
         <h3>작성한 글</h3>
@@ -66,10 +87,10 @@ const MyPage = () => {
           </div>
         ))}
       </section>
+
       <BottomNavBar activeTab={activeTab} setActiveTab={setActiveTab} />
     </div>
   );
 };
-// todo 모달창 더 수정하기
 
 export default MyPage;
