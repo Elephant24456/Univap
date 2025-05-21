@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import './ProfileModal.css';
 import Button from '../components/Button';
 import InputField from './InputField';
@@ -6,7 +6,14 @@ import exitIcon from '../assets/exit.png';
 
 const ProfileModal = ({ onClose }) => {
   const [profileImage, setProfileImage] = useState(null);
+  const [nickname, setNickname] = useState('');
   const fileInputRef = useRef(null);
+
+  // 기존 닉네임을 불러와서 초기값으로 설정
+  useEffect(() => {
+    const storedNickname = localStorage.getItem('nickname');
+    if (storedNickname) setNickname(storedNickname);
+  }, []);
 
   const handleImageClick = () => {
     fileInputRef.current.click();
@@ -19,11 +26,19 @@ const ProfileModal = ({ onClose }) => {
     }
   };
 
+  const handleComplete = () => {
+    if (nickname.trim()) {
+      localStorage.setItem('nickname', nickname); // 새 닉네임 저장
+    }
+    onClose(); // 모달 닫기
+    window.location.reload(); // 새로고침해서 반영되도록
+  };
+
   return (
     <div className="modal-backdrop">
       <div className="modal-content">
         <button className="close-btn" onClick={onClose}>
-          <img src={exitIcon} />
+          <img src={exitIcon} alt="닫기 아이콘" />
         </button>
 
         <h3>프로필 수정</h3>
@@ -46,6 +61,8 @@ const ProfileModal = ({ onClose }) => {
           <InputField
             type="text"
             placeholder="닉네임 입력"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
             className="nickname-input"
           />
         </div>
@@ -53,7 +70,7 @@ const ProfileModal = ({ onClose }) => {
         <Button
           className="small-btn"
           label="완료"
-          onClick={onClose}
+          onClick={handleComplete}
           variant="primary"
         />
       </div>
