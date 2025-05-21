@@ -32,10 +32,10 @@ const ProfileModal = ({ onClose, onNicknameChange, onImageChange }) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const base64 = reader.result;
-        setProfileImage(base64);
-        localStorage.setItem('profileImage', base64);
-        onImageChange(base64);
+        const base64Image = reader.result;
+        setProfileImage(base64Image);
+        localStorage.setItem('profileImage', base64Image);
+        onImageChange(base64Image); // 상태 + fetch 동시 처리
       };
       reader.readAsDataURL(file);
     }
@@ -43,8 +43,7 @@ const ProfileModal = ({ onClose, onNicknameChange, onImageChange }) => {
 
   const handleComplete = () => {
     if (nickname.trim()) {
-      localStorage.setItem('nickname', nickname);
-      onNicknameChange(nickname);
+      onNicknameChange(nickname); // 상태 + fetch 동시 처리
     }
     onClose();
   };

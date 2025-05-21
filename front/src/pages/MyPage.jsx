@@ -19,7 +19,7 @@ const dummyPosts = [
 
 const MyPage = () => {
   const [nickname, setNickname] = useState('');
-  const [profileImage, setProfileImage] = useState(''); // ✅ 프로필 이미지 상태 추가
+  const [profileImage, setProfileImage] = useState(''); // 프로필 이미지 상태 추가
   const [activeTab, setActiveTab] = useState('mypage');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -34,17 +34,47 @@ const MyPage = () => {
     }
 
     setNickname(storedNickname);
-    if (storedImage) setProfileImage(storedImage); // ✅ 이미지 불러오기
+    if (storedImage) setProfileImage(storedImage); // 이미지 불러오기
   }, []);
 
-  const handleNicknameChange = (newNickname) => {
+  const handleNicknameChange = async (newNickname) => {
+    const email = localStorage.getItem('email');
+
+    // 프론트 상태 반영
     setNickname(newNickname);
     localStorage.setItem('nickname', newNickname);
+
+    // DB에도 저장 시도 (API가 있다고 가정)
+    try {
+      const res = await fetch('http://localhost:8080/api/user/me', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, nickname: newNickname }),
+      });
+      const result = await res.json();
+      console.log('닉네임 저장됨:', result.message);
+    } catch (err) {
+      console.error('닉네임 저장 실패:', err);
+    }
   };
 
-  const handleImageChange = (newImage) => {
+  const handleImageChange = async (newImage) => {
+    const email = localStorage.getItem('email');
+
     setProfileImage(newImage);
     localStorage.setItem('profileImage', newImage);
+
+    try {
+      const res = await fetch('http://localhost:8080/api/user/me/image', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, profileImage: newImage }),
+      });
+      const result = await res.json();
+      console.log('이미지 저장됨:', result.message);
+    } catch (err) {
+      console.error('이미지 저장 실패:', err);
+    }
   };
 
   const myPosts = dummyPosts.filter((post) => post.author === nickname);
