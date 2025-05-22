@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import Header from '../components/Header';
 import BottomNavBar from '../components/BottomNavBar';
 import '../index.css';
@@ -7,6 +7,7 @@ import FloatingActionButton from '../pages/FloatingActionButton';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const [nickname, setNickname] = useState('');
   const [activeTab, setActiveTab] = useState('home');
 
   const navigate = useNavigate();
@@ -14,9 +15,20 @@ const Home = () => {
     navigate('/write');
   };
 
+  useEffect(() => {
+    const storedNickname = localStorage.getItem('nickname');
+    if (!storedNickname) {
+      alert('로그인이 필요합니다.');
+      window.location.href = '/login';
+      return;
+    }
+    setNickname(storedNickname);
+  }, [navigate]);
+
   return (
     <div className="page-layout">
-      <Header username="독수리" />
+      {/* nickname을 Header에 전달 */}
+      <Header username={nickname} />
 
       <main className="home-content">
         <div>
