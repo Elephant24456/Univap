@@ -1,12 +1,14 @@
 package com.univap.controller;
 
 import com.univap.dto.LoginRequest;
+import com.univap.dto.NicknameUpdateRequest;
 import com.univap.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 import com.univap.entity.User;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -47,5 +49,21 @@ public class UserController {
 
         userRepository.save(user);
         return ResponseEntity.ok(Map.of("success", true, "message", "회원가입 성공"));
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<?> updateNickname(@RequestBody NicknameUpdateRequest request) {
+        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
+
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            user.setNickname(request.getNickname());
+            userRepository.save(user);
+
+            return ResponseEntity.ok(Map.of("success", true, "message", "닉네임 변경 성공"));
+        }
+        else{
+            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "오류 발생"));
+        }
     }
 }
