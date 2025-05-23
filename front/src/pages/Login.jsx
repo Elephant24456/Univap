@@ -36,7 +36,7 @@ const Login = () => {
 
         // 닉네임 로컬스토리지에 저장해서 다른 페이지에서 사용
         localStorage.setItem('nickname', result.nickname);
-
+        localStorage.setItem('email', email);
         navigate('/home');
       } else {
         alert('로그인 실패: ' + result.message);

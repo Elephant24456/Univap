@@ -18,6 +18,8 @@ public class User {
     private String email;
     private String password;
     private String nickname;
-
     private String univ;
+
+    @Column(name = "profile_img")
+    private String image;
 }
