@@ -2,13 +2,20 @@ package com.univap.controller;
 
 import com.univap.dto.LoginRequest;
 import com.univap.dto.NicknameUpdateRequest;
+import com.univap.dto.ProfileImageRequest;
 import com.univap.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 import com.univap.entity.User;
 import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/user")
@@ -64,6 +71,36 @@ public class UserController {
         }
         else{
             return ResponseEntity.badRequest().body(Map.of("success", false, "message", "오류 발생"));
+        }
+    }
+
+    @PutMapping("/me/image")
+    public ResponseEntity<?> updateProfileImage(@RequestBody ProfileImageRequest request) {
+        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
+
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            try{
+                String image = request.getProfileImage();
+                if(image.contains(",")){
+                    image = image.split(",")[1];
+                }
+                byte[] imageBytes = Base64.getDecoder().decode(image);
+
+                String fileName = UUID.randomUUID().toString() + ".png";
+                Path path = Paths.get("uploads/profile/images/" + fileName);
+                Files.createDirectories(path.getParent());
+                Files.write(path, imageBytes);
+
+                user.setImage(path.toString());
+                userRepository.save(user);
+
+                return ResponseEntity.ok(Map.of("success", true, "message", "이미지 저장 완료"));
+            }catch(IOException e){
+                return ResponseEntity.status(500).body(Map.of("success", false, "message", "파일 저장 실패"));
+            }
+        }else{
+            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "사용자 없음"));
         }
     }
 }

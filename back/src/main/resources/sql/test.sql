@@ -14,4 +14,9 @@ WHERE email = 'test@test.com' AND password = '12345678';
 select * from user
 where email = 'haerin@newjeans.com' and password = '12345678';
 
+
+UPDATE user #비밀번호 변경
+SET password = '12345678'
+WHERE id = 4;
+
 commit;
