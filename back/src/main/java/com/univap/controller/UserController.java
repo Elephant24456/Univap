@@ -103,4 +103,26 @@ public class UserController {
             return ResponseEntity.badRequest().body(Map.of("success", false, "message", "사용자 없음"));
         }
     }
+
+    @GetMapping("/me/image/view")
+    public ResponseEntity<?> viewProfileImage(@RequestParam String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            if(user.getImage().isBlank()){
+                return ResponseEntity.badRequest().body(Map.of("success", false, "message", "이미지가 설정 되지 않음", "profileImage","기본 이미지"));
+            }
+            Path path = Paths.get(user.getImage());
+
+            try {
+                byte[] bytes = Files.readAllBytes(path);
+                String base64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
+                return ResponseEntity.ok(Map.of("success", true, "message", "이미지 로드 성공", "profileImage", base64));
+            } catch (IOException e) {
+                return ResponseEntity.status(500).body(Map.of("success", false, "message", "이미지 로드 실패", "profileImage", "hedgehog"));
+            }
+        }
+        return ResponseEntity.badRequest().body(Map.of("success", false, "message", "존재하지 않는 유저", "profileImage", "nothing"));
+    }
 }
