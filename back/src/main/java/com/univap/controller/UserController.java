@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
@@ -80,6 +81,7 @@ public class UserController {
 
         if(optionalUser.isPresent()){
             User user = optionalUser.get();
+
             try{
                 String image = request.getProfileImage();
                 if(image.contains(",")){
@@ -91,6 +93,17 @@ public class UserController {
                 Path path = Paths.get("uploads/profile/images/" + fileName);
                 Files.createDirectories(path.getParent());
                 Files.write(path, imageBytes);
+
+                if(!user.getImage().isBlank()){
+                    try{
+                        Path oldImagePath = Paths.get(user.getImage());
+                        Files.delete(oldImagePath);
+                    }catch (NoSuchFileException e){
+                        System.out.println("저장된 이미지가 없음" + e.getMessage());
+                    }catch (IOException e){
+                        System.out.println("이미지 삭제 오류" + e.getMessage());
+                    }
+                }
 
                 user.setImage(path.toString());
                 userRepository.save(user);
