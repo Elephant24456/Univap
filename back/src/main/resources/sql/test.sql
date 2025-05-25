@@ -20,3 +20,7 @@ SET password = '12345678'
 WHERE id = 4;
 
 commit;
+
+UPDATE user #profile_img가 null일 경우 빈문자열로 바꿔주는 코드
+SET profile_img = ''
+WHERE id = 4;
