@@ -2,6 +2,8 @@ SHOW DATABASES; #db 목록 조회
 
 USE capstone_db; #capstone_db 사용
 
+#user테이블 관련
+
 SELECT * FROM user; #유저 목록 조회
 
 DELETE FROM user WHERE id = 1; #특정 유저 삭제
@@ -24,3 +26,14 @@ commit;
 UPDATE user #profile_img가 null일 경우 빈문자열로 바꿔주는 코드
 SET profile_img = ''
 WHERE id = 4;
+
+#포스트 테이블 관련
+
+#포스트 테이블 조회
+SELECT * FROM post;
+
+#포스트 삭제
+DELETE FROM post WHERE id = 1;
+
+#auto_increment초기화
+ALTER TABLE post AUTO_INCREMENT = 1;
