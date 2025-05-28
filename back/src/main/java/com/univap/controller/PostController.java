@@ -1,16 +1,22 @@
 package com.univap.controller;
 
+import com.univap.dto.PostListResponse;
 import com.univap.dto.PostRequest;
+import com.univap.dto.PostViewResponse;
 import com.univap.entity.Post;
 import com.univap.entity.User;
 import com.univap.repository.PostRepository;
 import com.univap.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/post")
@@ -51,5 +57,26 @@ public class PostController {
         }catch(Exception e){
             return ResponseEntity.status(500).body(Map.of("success", false, "message", "서버 오류로 게시글 작성 실패"));
         }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getPostById(@PathVariable Long id){
+        Optional<Post> optionalPost = postRepository.findById(id);
+
+        if(optionalPost.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("success", false, "Message", "게시글을 찾을 수 없습니다."));
+        }
+        Post post = optionalPost.get();
+
+        PostViewResponse postViewResponse = new PostViewResponse(post);
+        return ResponseEntity.ok(postViewResponse);
+    }
+
+   @GetMapping("/list")
+    public ResponseEntity<List<PostListResponse>> getAllPosts(){
+        List<Post> postList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+
+        List<PostListResponse> postListResponses = postList.stream().map(PostListResponse::fromEntity).collect(Collectors.toList());
+        return ResponseEntity.ok(postListResponses);
     }
 }
