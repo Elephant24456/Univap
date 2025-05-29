@@ -1,9 +1,14 @@
 package com.univap.controller;
 
-import com.univap.dto.LoginRequest;
-import com.univap.dto.NicknameUpdateRequest;
-import com.univap.dto.ProfileImageRequest;
+import com.univap.repository.PostRepository;
+import com.univap.dto.post.PostListResponse;
+import com.univap.dto.user.LoginRequest;
+import com.univap.dto.user.NicknameUpdateRequest;
+import com.univap.dto.user.ProfileImageRequest;
+import com.univap.entity.Post;
 import com.univap.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import com.univap.entity.User;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -24,10 +27,14 @@ import java.util.UUID;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
-    public UserController(UserRepository userRepository) {
+    @Autowired
+    public UserController(UserRepository userRepository, PostRepository postRepository) {
         this.userRepository = userRepository;
+        this.postRepository = postRepository;
     }
+
 
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody LoginRequest request){
@@ -137,5 +144,14 @@ public class UserController {
             }
         }
         return ResponseEntity.badRequest().body(Map.of("success", false, "message", "존재하지 않는 유저", "profileImage", "nothing"));
+    }
+
+    @GetMapping("/{userId}/posts")
+    public ResponseEntity<List<PostListResponse>> getMyPosts(@PathVariable Long userId){
+
+        List<Post> myPostList = postRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "id"));
+
+        List<PostListResponse> myPostListResponses = myPostList.stream().map(PostListResponse::fromEntity).collect(Collectors.toList());
+        return ResponseEntity.ok(myPostListResponses);
     }
 }

@@ -1,4 +1,4 @@
-package com.univap.dto;
+package com.univap.dto.univcert;
 
 import lombok.Data;
 

@@ -32,5 +32,7 @@ public class Post {
     private User user;
 
     private String nickname;
-    private LocalDateTime post_time;
+
+    @Column(name = "post_time", insertable = false, updatable = false)
+    private LocalDateTime postTime;
 }
