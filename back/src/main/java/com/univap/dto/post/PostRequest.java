@@ -1,4 +1,4 @@
-package com.univap.dto;
+package com.univap.dto.post;
 
 import lombok.Getter;
 import lombok.Setter;

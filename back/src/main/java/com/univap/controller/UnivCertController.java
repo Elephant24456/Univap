@@ -1,7 +1,7 @@
 package com.univap.controller;
 
-import com.univap.dto.UnivCertRequest;
-import com.univap.dto.UnivCertVerify;
+import com.univap.dto.univcert.UnivCertRequest;
+import com.univap.dto.univcert.UnivCertVerify;
 import com.univap.service.UnivCertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
