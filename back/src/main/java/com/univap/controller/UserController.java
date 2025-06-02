@@ -1,21 +1,25 @@
 package com.univap.controller;
 
-import com.univap.dto.LoginRequest;
-import com.univap.dto.NicknameUpdateRequest;
-import com.univap.dto.ProfileImageRequest;
+import com.univap.repository.PostRepository;
+import com.univap.dto.post.PostListResponse;
+import com.univap.dto.user.LoginRequest;
+import com.univap.dto.user.NicknameUpdateRequest;
+import com.univap.dto.user.ProfileImageRequest;
+import com.univap.entity.Post;
 import com.univap.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import com.univap.entity.User;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -23,10 +27,14 @@ import java.util.UUID;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
-    public UserController(UserRepository userRepository) {
+    @Autowired
+    public UserController(UserRepository userRepository, PostRepository postRepository) {
         this.userRepository = userRepository;
+        this.postRepository = postRepository;
     }
+
 
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody LoginRequest request){
@@ -80,6 +88,7 @@ public class UserController {
 
         if(optionalUser.isPresent()){
             User user = optionalUser.get();
+
             try{
                 String image = request.getProfileImage();
                 if(image.contains(",")){
@@ -92,6 +101,17 @@ public class UserController {
                 Files.createDirectories(path.getParent());
                 Files.write(path, imageBytes);
 
+                if(!user.getImage().isBlank()){
+                    try{
+                        Path oldImagePath = Paths.get(user.getImage());
+                        Files.delete(oldImagePath);
+                    }catch (NoSuchFileException e){
+                        System.out.println("저장된 이미지가 없음" + e.getMessage());
+                    }catch (IOException e){
+                        System.out.println("이미지 삭제 오류" + e.getMessage());
+                    }
+                }
+
                 user.setImage(path.toString());
                 userRepository.save(user);
 
@@ -102,5 +122,36 @@ public class UserController {
         }else{
             return ResponseEntity.badRequest().body(Map.of("success", false, "message", "사용자 없음"));
         }
+    }
+
+    @GetMapping("/me/image/view")
+    public ResponseEntity<?> viewProfileImage(@RequestParam String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            if(user.getImage().isBlank()){
+                return ResponseEntity.badRequest().body(Map.of("success", false, "message", "이미지가 설정 되지 않음", "profileImage","기본 이미지"));
+            }
+            Path path = Paths.get(user.getImage());
+
+            try {
+                byte[] bytes = Files.readAllBytes(path);
+                String base64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
+                return ResponseEntity.ok(Map.of("success", true, "message", "이미지 로드 성공", "profileImage", base64));
+            } catch (IOException e) {
+                return ResponseEntity.status(500).body(Map.of("success", false, "message", "이미지 로드 실패", "profileImage", "hedgehog"));
+            }
+        }
+        return ResponseEntity.badRequest().body(Map.of("success", false, "message", "존재하지 않는 유저", "profileImage", "nothing"));
+    }
+
+    @GetMapping("/{userId}/posts")
+    public ResponseEntity<List<PostListResponse>> getMyPosts(@PathVariable Long userId){
+
+        List<Post> myPostList = postRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "id"));
+
+        List<PostListResponse> myPostListResponses = myPostList.stream().map(PostListResponse::fromEntity).collect(Collectors.toList());
+        return ResponseEntity.ok(myPostListResponses);
     }
 }

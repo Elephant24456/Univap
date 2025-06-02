@@ -1,7 +1,7 @@
 package com.univap.service;
 
-import com.univap.dto.UnivCertRequest;
-import com.univap.dto.UnivCertVerify;
+import com.univap.dto.univcert.UnivCertRequest;
+import com.univap.dto.univcert.UnivCertVerify;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
