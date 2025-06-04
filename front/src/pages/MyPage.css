@@ -1,3 +1,14 @@
+.my-posts-header {
+  max-height: 500px; /* 원하는 최대 높이 */
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.my-posts::-webkit-scrollbar {
+  /* Chrome, Safari, Opera */
+  display: none;
+}
 .profile {
   width: 100%;
   margin-bottom: 24px;
@@ -27,4 +38,77 @@
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+}
+.my-posts {
+  width: 100%;
+  padding: 0 8px;
+}
+
+.my-posts h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+
+.post-card {
+  background: #fff;
+  border-radius: 0;
+  margin-bottom: 0;
+  padding: 0 0 6px 0;
+}
+
+.post-card-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 14px 4px 2px 4px;
+}
+
+.post-card-main {
+  flex: 1;
+}
+
+.post-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 3px;
+  color: #222;
+}
+
+.post-card-meta {
+  font-size: 13px;
+  color: #6f6f6f;
+  margin-bottom: 4px;
+}
+
+.post-card-content {
+  font-size: 13px;
+  color: #323232;
+  margin-top: 0;
+  word-break: keep-all;
+}
+
+.post-card-arrow {
+  color: #aaa;
+  margin-left: 8px;
+  margin-top: 8px;
+}
+
+.post-card-divider {
+  height: 1px;
+  background: #ececec;
+  margin: 0 0 0 4px;
+  width: calc(100% - 10px);
+}
+
+.delete-btn {
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.delete-btn:hover {
+  margin-bottom: 10px;
+  margin-right: 10px;
+  color: #fc703b;
 }

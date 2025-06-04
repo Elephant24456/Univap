@@ -1,0 +1,66 @@
+/* EditPostModal.css */
+
+.edit-modal-backdrop {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.18);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-modal {
+  background: #fff;
+  padding: 28px 20px 18px 20px;
+  border-radius: 20px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  width: 350px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edit-modal-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 9px 0;
+  border-radius: 7px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.gray-btn {
+  background: #eee !important;
+  color: #444 !important;
+  border: 1px solid #ccc !important;
+}
+.modal-btn {
+  width: 100px; /* 필요시 조정 */
+  height: 40px; /* 버튼 높이 */
+  display: flex;
+  align-items: center; /* 수직 중앙 */
+  justify-content: center; /* 수평 중앙 */
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.gray-btn {
+  background: #f3f3f3;
+  color: #444;
+  border: 1.5px solid #ddd;
+}

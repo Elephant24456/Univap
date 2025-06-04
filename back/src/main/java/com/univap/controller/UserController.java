@@ -45,7 +45,8 @@ public class UserController {
                 .map(user -> (Map<String, Object>) (Map) Map.of(
                 "success", true,
                 "message", "로그인 성공",
-                "nickname", user.getNickname()
+                        "id", user.getId(),
+                        "nickname", user.getNickname()
         )).orElse((Map<String, Object>) (Map) Map.of(
                 "success", false,
                 "message", "이메일 또는 비밀번호가 틀렸습니다."
