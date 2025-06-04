@@ -16,6 +16,7 @@ public class PostListResponse {
     private LocalDate date;
     private LocalTime time;
     private LocalDateTime postTime;
+    private String content;
 
     public static PostListResponse fromEntity(Post post){
         PostListResponse dto = new PostListResponse();
@@ -26,6 +27,7 @@ public class PostListResponse {
         dto.date = post.getDate();
         dto.time = post.getTime();
         dto.postTime = post.getPostTime();
+        dto.content = post.getContent();
         return dto;
     }
 }

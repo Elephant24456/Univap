@@ -33,11 +33,13 @@ export default App;
 
 import React from 'react';
 import Router from './routes/Router'; // 라우팅 컴포넌트 불러오기
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <div className="App">
-      <Router />  {/* ✅ 이제 이게 모든 라우팅을 담당함 */}
+      <Toaster position="top-center" />
+      <Router /> {/* ✅ 이제 이게 모든 라우팅을 담당함 */}
     </div>
   );
 }
