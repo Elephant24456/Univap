@@ -1,3 +1,4 @@
+/*
 import logo from './logo.svg';
 import Test from '../src/components/Test';
 import React from 'react';
@@ -22,6 +23,21 @@ function App() {
       <h1>스프링부트& 리액트 DB 연동 테스트</h1>
       <Test />
       <AppRouter />
+    </div>
+  );
+}
+
+export default App;
+
+ */
+
+import React from 'react';
+import Router from './routes/Router'; // 라우팅 컴포넌트 불러오기
+
+function App() {
+  return (
+    <div className="App">
+      <Router />  {/* ✅ 이제 이게 모든 라우팅을 담당함 */}
     </div>
   );
 }

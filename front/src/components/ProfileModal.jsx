@@ -1,12 +1,27 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import './ProfileModal.css';
 import Button from '../components/Button';
 import InputField from './InputField';
 import exitIcon from '../assets/exit.png';
 
-const ProfileModal = ({ onClose }) => {
+const ProfileModal = ({ onClose, onNicknameChange, onImageChange }) => {
   const [profileImage, setProfileImage] = useState(null);
+  const [nickname, setNickname] = useState('');
   const fileInputRef = useRef(null);
+
+  // 기존 닉네임을 불러와서 초기값으로 설정
+  useEffect(() => {
+    const savedImage = localStorage.getItem('profileImage');
+    if (savedImage) setProfileImage(savedImage);
+    const storedNickname = localStorage.getItem('nickname');
+    if (storedNickname) setNickname(storedNickname);
+  }, []);
+
+  // 기존 프로필 이미지를 불러와서 초기값으로 설정
+  useEffect(() => {
+    const savedImage = localStorage.getItem('profileImage');
+    if (savedImage) setProfileImage(savedImage);
+  }, []);
 
   const handleImageClick = () => {
     fileInputRef.current.click();
@@ -15,15 +30,29 @@ const ProfileModal = ({ onClose }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfileImage(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Image = reader.result;
+        setProfileImage(base64Image);
+        localStorage.setItem('profileImage', base64Image);
+        onImageChange(base64Image); // 상태 + fetch 동시 처리
+      };
+      reader.readAsDataURL(file);
     }
+  };
+
+  const handleComplete = () => {
+    if (nickname.trim()) {
+      onNicknameChange(nickname); // 상태 + fetch 동시 처리
+    }
+    onClose();
   };
 
   return (
     <div className="modal-backdrop">
       <div className="modal-content">
         <button className="close-btn" onClick={onClose}>
-          <img src={exitIcon} />
+          <img src={exitIcon} alt="닫기 아이콘" />
         </button>
 
         <h3>프로필 수정</h3>
@@ -35,6 +64,7 @@ const ProfileModal = ({ onClose }) => {
             className="avatar"
             onClick={handleImageClick}
           />
+
           <input
             type="file"
             accept="image/*"
@@ -46,6 +76,8 @@ const ProfileModal = ({ onClose }) => {
           <InputField
             type="text"
             placeholder="닉네임 입력"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
             className="nickname-input"
           />
         </div>
@@ -53,7 +85,7 @@ const ProfileModal = ({ onClose }) => {
         <Button
           className="small-btn"
           label="완료"
-          onClick={onClose}
+          onClick={handleComplete}
           variant="primary"
         />
       </div>

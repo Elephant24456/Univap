@@ -7,6 +7,7 @@ import openEye from '../assets/open-eye.png';
 import closeEye from '../assets/close-eye.png';
 import backIcon from '../assets/back.png';
 import './Login.css';
+import '../index.css';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,13 +16,39 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = () => {
-    console.log('로그인 시도: ', email, password);
-    // TODO: 로그인 로직 추가
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log('login success', result);
+
+        // 닉네임 로컬스토리지에 저장해서 다른 페이지에서 사용
+        localStorage.setItem('nickname', result.nickname);
+        localStorage.setItem('email', email);
+        navigate('/home');
+      } else {
+        alert('로그인 실패: ' + result.message);
+      }
+    } catch (error) {
+      console.error('🚨 서버 연결 실패:', error);
+      alert('서버와 연결할 수 없습니다.');
+    }
   };
 
   return (
-    <div className="login-container">
+    <div className="page-layout login-container">
       {/* 뒤로가기 버튼 */}
       <img
         src={backIcon}
