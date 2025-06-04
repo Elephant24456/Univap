@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import BottomNavBar from "../components/BottomNavBar";
 import "../index.css";
 
-import FloatingActionButton from "../pages/FloatingActionButton";
+import FloatingActionButton from "../components/FloatingActionButton";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
