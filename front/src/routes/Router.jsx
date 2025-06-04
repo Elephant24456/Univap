@@ -1,10 +1,11 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LoginIntro from '../pages/LoginIntro';
-import Login from '../pages/Login';
-import SignUp from '../pages/SignUp';
-import Home from '../pages/Home';
-import Write from '../pages/Write';
-import MyPage from '../pages/MyPage';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LoginIntro from "../pages/LoginIntro";
+import Login from "../pages/Login";
+import SignUp from "../pages/SignUp";
+import Home from "../pages/Home";
+import Write from "../pages/Write";
+import MyPage from "../pages/MyPage";
+import Chatting from "../pages/Chatting";
 
 const Router = () => {
   return (
@@ -16,6 +17,7 @@ const Router = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/write" element={<Write />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/chatting" element={<Chatting />} />
       </Routes>
     </BrowserRouter>
   );

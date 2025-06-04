@@ -1,12 +1,8 @@
 import React from "react";
-import ChatWindow from "../components/chatting/ChatWindow";
+import Chat from "../components/Chat";
 
 const Chatting = () => {
-  return (
-    <div className="chatting-page">
-      <ChatWindow />
-    </div>
-  );
+  return <Chat />;
 };
 
 export default Chatting;
