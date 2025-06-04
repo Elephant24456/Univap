@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import backIcon from '../assets/back.png';
 import './Write.css';
 import '../index.css';
+import toast from 'react-hot-toast';
 
 const Write = () => {
   const navigate = useNavigate();
@@ -28,10 +29,12 @@ const Write = () => {
   const handleDone = async () => {
     if (!userId || userId === 'undefined' || userId === 'null') {
       setError('로그인이 필요합니다.');
+      toast.error('로그인이 필요합니다.');
       return;
     }
     if (!title || !date || !time || !location || !content) {
       setError('모든 필드를 입력해주세요.');
+      toast.error('모든 필드를 입력해주세요.');
       return;
     }
     setError('');
@@ -52,13 +55,16 @@ const Write = () => {
       console.log('post 작성 결과:', response.data);
 
       if (response.data.success) {
+        toast.success('글이 작성되었습니다!');
         navigate('/home');
       } else {
         setError(response.data.message || '작성 실패');
+        toast.error(response.data.message || '작성 실패');
       }
     } catch (err) {
       setError('서버 오류로 작성 실패');
-      console.error('작성 오류:', err);
+
+      toast.error('서버 오류로 작성 실패');
     }
   };
 

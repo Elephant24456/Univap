@@ -112,3 +112,32 @@
   margin-right: 10px;
   color: #fc703b;
 }
+.swal-small-popup {
+  padding: 16px !important;
+  border-radius: 18px !important;
+  width: 280px !important;
+  min-width: 0 !important;
+  box-shadow: 0 6px 32px rgba(0, 0, 0, 0.12) !important;
+}
+.swal-small-title {
+  font-size: 1.07rem !important;
+}
+
+.swal2-icon {
+  width: 38px !important;
+  height: 38px !important;
+  margin: 0 auto 4px auto !important;
+}
+.swal2-icon .swal2-icon-content {
+  font-size: 2.2rem !important;
+}
+.swal2-actions {
+  margin-top: 12px !important;
+  gap: 8px !important;
+}
+.swal2-confirm,
+.swal2-cancel {
+  border-radius: 8px !important;
+  padding: 7px 18px !important;
+  font-size: 0.98rem !important;
+}

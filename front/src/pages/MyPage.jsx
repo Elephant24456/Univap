@@ -6,6 +6,8 @@ import profileGray from '../assets/profile-gray.png';
 import ProfileModal from '../components/ProfileModal';
 import EditPostModal from '../components/EditPostModal';
 import { IoIosArrowForward, IoMdTrash } from 'react-icons/io';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 import './MyPage.css';
 import '../index.css';
 
@@ -63,36 +65,63 @@ const MyPage = () => {
           myPosts.map((post) => (post.id === editedPost.id ? editedPost : post))
         );
         setEditingPost(null);
-        alert('수정 완료!');
+        toast.success('글이 수정되었습니다!');
       } else {
-        alert(result.message || '수정 실패');
+        toast.error(result.message || '수정 실패');
       }
     } catch (err) {
-      alert('수정 중 오류 발생');
+      toast.error('수정 중 오류 발생');
     }
   };
 
-  // 글 삭제 (아직 화면에 삭제버튼 없음. 필요하면 추가)
+  // 글 수정 취소
+  const handleEditCancel = () => {
+    setEditingPost(null);
+    toast.success('수정이 취소되었습니다.');
+  };
+
+  // 글 삭제
   const handlePostDelete = async (postId) => {
-    if (!window.confirm('정말 삭제하시겠습니까?')) return;
-    try {
-      const res = await fetch(
-        `http://localhost:8080/api/post/delete/${postId}`,
-        {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: localStorage.getItem('id') }),
+    const result = await Swal.fire({
+      title: '정말 삭제하시겠습니까?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#fa6e34',
+      cancelButtonColor: '#b2b2b2',
+      confirmButtonText: '네, 삭제할게요',
+      cancelButtonText: '취소',
+      width: 250,
+      customClass: {
+        popup: 'swal-small-popup',
+        title: 'swal-small-title',
+        content: 'swal-small-content',
+      },
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const res = await fetch(
+          `http://localhost:8080/api/post/delete/${postId}`,
+          {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: localStorage.getItem('id') }),
+          }
+        );
+        const data = await res.json();
+
+        if (data.success) {
+          setMyPosts(myPosts.filter((post) => post.id !== postId));
+          toast.success('글이 삭제되었습니다!');
+        } else {
+          toast.error(data.message || '삭제 실패');
         }
-      );
-      const result = await res.json();
-      if (result.success) {
-        setMyPosts(myPosts.filter((post) => post.id !== postId));
-        alert('삭제 완료!');
-      } else {
-        alert(result.message || '삭제 실패');
+      } catch (err) {
+        toast.error('서버 오류가 발생했습니다.');
       }
-    } catch (err) {
-      alert('삭제 중 오류 발생');
+    } else {
+      // 취소 버튼 눌렀을 때
+      toast('삭제가 취소되었습니다.', { icon: '❎' });
     }
   };
 
@@ -109,9 +138,13 @@ const MyPage = () => {
         body: JSON.stringify({ email, nickname: newNickname }),
       });
       const result = await res.json();
-      console.log('닉네임 저장됨:', result.message);
+      if (result.success) {
+        toast.success('프로필이 저장되었습니다!');
+      } else {
+        toast.error(result.message || '프로필 저장 실패');
+      }
     } catch (err) {
-      console.error('닉네임 저장 실패:', err);
+      toast.error('프로필 저장 실패');
     }
   };
 
@@ -128,10 +161,19 @@ const MyPage = () => {
         body: JSON.stringify({ email, profileImage: newImage }),
       });
       const result = await res.json();
-      console.log('이미지 저장됨:', result.message);
+      if (result.success) {
+        toast.success('프로필 사진이 변경되었습니다!');
+      } else {
+        toast.error(result.message || '프로필 사진 변경 실패');
+      }
     } catch (err) {
-      console.error('이미지 저장 실패:', err);
+      toast.error('프로필 사진 변경 실패');
     }
+  };
+
+  // 프로필 편집 닫기 (취소)
+  const handleProfileEditCancel = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -149,14 +191,16 @@ const MyPage = () => {
         </div>
         <Button
           label="프로필 편집"
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
           variant="primary"
         />
       </section>
 
       {isModalOpen && (
         <ProfileModal
-          onClose={() => setIsModalOpen(false)}
+          onClose={handleProfileEditCancel} // 취소 시 토스트
           onNicknameChange={handleNicknameChange}
           onImageChange={handleImageChange}
         />
@@ -226,7 +270,7 @@ const MyPage = () => {
           post={editingPost}
           onSave={handlePostUpdate}
           onDelete={handlePostDelete}
-          onClose={() => setEditingPost(null)}
+          onClose={handleEditCancel} // 취소 시 토스트 알림
         />
       )}
       <BottomNavBar activeTab={activeTab} setActiveTab={setActiveTab} />
