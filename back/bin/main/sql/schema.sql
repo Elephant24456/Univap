@@ -7,11 +7,6 @@ CREATE TABLE user( #user테이블 생성
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(50) NOT NULL,
     univ VARCHAR(50) NOT NULL,
-<<<<<<< HEAD
-    profile_img VARCHAR(255),
-    nickname VARCHAR(30) NOT NULL
-);
-=======
     profile_img VARCHAR(255) NOT NULL DEFAULT '',
     nickname VARCHAR(30) NOT NULL
 );
@@ -53,4 +48,3 @@ CREATE TABLE post( #post테이블 생성
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
 >>>>>>> 5154724ee1b71a2aa456643d804bbfb97483239a
->>>>>>> a860a818f639b0eb1993ff4cc32058f2561eb2f5
