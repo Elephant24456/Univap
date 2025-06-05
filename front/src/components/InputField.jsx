@@ -10,18 +10,27 @@ const InputField = ({
   disabled = false,
   autoComplete = 'off',
   className,
+  icon,
+  onIconClick,
 }) => {
   return (
-    <input
-      className={`input-field ${className || ''}`}
-      type={type}
-      name={name}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      disabled={disabled}
-      autoComplete={autoComplete}
-    />
+    <div className="input-wrapper">
+      <input
+        className={`input-field ${className || ''}`}
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        autoComplete={autoComplete}
+      />
+      {icon && (
+        <div className="icon-wrapper" onClick={onIconClick}>
+          {icon}
+        </div>
+      )}
+    </div>
   );
 };
 
