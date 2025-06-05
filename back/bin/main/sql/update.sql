@@ -1,9 +1,0 @@
-USE capstone_db;
-
-#1번(05.24)
-ALTER TABLE user
-MODIFY profile_img VARCHAR(255) NOT NULL DEFAULT '';
-
-#2번(05.25)
-ALTER TABLE user
-MODIFY id INT NOT NULL;
