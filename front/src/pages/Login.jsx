@@ -91,7 +91,7 @@ const Login = () => {
       <Button label="로그인" onClick={handleLogin} variant="primary" />
       {/* 회원가입 */}
       <p>
-        계정이 없으신가요?{' '}
+        계정이 없으신가요?
         <span onClick={() => navigate('/signup')}>회원가입</span>
       </p>
     </div>
