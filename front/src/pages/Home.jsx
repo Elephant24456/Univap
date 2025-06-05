@@ -1,25 +1,25 @@
-import React, { useState, useEffect, use } from 'react';
-import Header from '../components/Header';
-import BottomNavBar from '../components/BottomNavBar';
-import '../index.css';
+import React, { useState, useEffect } from "react";
+import Header from "../components/Header";
+import BottomNavBar from "../components/BottomNavBar";
+import "../index.css";
 
-import FloatingActionButton from '../pages/FloatingActionButton';
-import { useNavigate } from 'react-router-dom';
+import FloatingActionButton from "../components/FloatingActionButton";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const [nickname, setNickname] = useState('');
-  const [activeTab, setActiveTab] = useState('home');
+  const [nickname, setNickname] = useState("");
+  const [activeTab, setActiveTab] = useState("home");
 
   const navigate = useNavigate();
   const handleFabClick = () => {
-    navigate('/write');
+    navigate("/write");
   };
 
   useEffect(() => {
-    const storedNickname = localStorage.getItem('nickname');
+    const storedNickname = localStorage.getItem("nickname");
     if (!storedNickname) {
-      alert('로그인이 필요합니다.');
-      window.location.href = '/login';
+      alert("로그인이 필요합니다.");
+      window.location.href = "/login";
       return;
     }
     setNickname(storedNickname);
