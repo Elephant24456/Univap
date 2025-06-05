@@ -10,8 +10,8 @@
   color: #333;
 }
 
-.text-logo {
-  width: 222px;
+.logo {
+  width: 100px;
   margin-top: 80px;
   margin-bottom: 20px;
 }
@@ -21,8 +21,10 @@
   font-size: 20px;
   font-weight: 400;
   margin-bottom: 8px;
+  color: #333;
 }
 .inro-second-text {
+  color: #333;
   font-size: 24px;
   font-weight: 700;
   margin-top: 0px;
@@ -32,4 +34,8 @@
 .highlight {
   font-weight: bold;
   color: #fc703b;
+}
+
+.password-toggle-icon {
+  color: #6e6e6e;
 }

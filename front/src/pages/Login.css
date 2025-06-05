@@ -1,6 +1,6 @@
 /* 로고 */
-.text-logo {
-  width: 120px;
+.logo {
+  width: 100px;
   height: auto;
   margin-bottom: 8px;
 }
@@ -18,8 +18,9 @@
 .back-button {
   position: absolute;
   top: 16px;
-  left: 16px;
-  width: 10px;
+  left: 5px;
+  width: 20px;
+  color: #6e6e6e;
 }
 
 /* 이메일 / 비밀번호 */
