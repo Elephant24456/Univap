@@ -20,6 +20,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+//필드에 암호화기 추가
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+
 
 @RestController
 @RequestMapping("/api/user")
@@ -28,6 +33,8 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 
     @Autowired
     public UserController(UserRepository userRepository, PostRepository postRepository) {
@@ -41,16 +48,24 @@ public class UserController {
         String email = request.getEmail();
         String password = request.getPassword();
 
-        return userRepository.findByEmailAndPassword(email, password)
-                .map(user -> (Map<String, Object>) (Map) Map.of(
-                "success", true,
-                "message", "로그인 성공",
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return Map.of(
+                        "success", true,
+                        "message", "로그인 성공",
                         "id", user.getId(),
                         "nickname", user.getNickname()
-        )).orElse((Map<String, Object>) (Map) Map.of(
+                );
+            }
+        }
+
+        return Map.of(
                 "success", false,
                 "message", "이메일 또는 비밀번호가 틀렸습니다."
-        ));
+        );
     }
 
     @PostMapping("/signup")
@@ -62,6 +77,8 @@ public class UserController {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("이미 존재하는 이메일입니다.");
         }
+        // 해싱 적용
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
         return ResponseEntity.ok(Map.of("success", true, "message", "회원가입 성공"));
@@ -148,7 +165,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/posts")
-    public ResponseEntity<List<PostListResponse>> getMyPosts(@PathVariable Long userId){
+    public ResponseEntity<List<PostListResponse>> getMyPosts(@PathVariable Long userId) {
 
         List<Post> myPostList = postRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "id"));
 

@@ -120,7 +120,7 @@ const SignUp = () => {
         className="back-button"
         onClick={() => navigate('/')}
       />
-      <img src={logo} alt="Univap 로고" className="text-logo" />
+      <img src={logo} alt="Univap 로고" className="logo" />
       <h2 className="sign-up-title">회원가입</h2>
 
       <p>닉네임</p>

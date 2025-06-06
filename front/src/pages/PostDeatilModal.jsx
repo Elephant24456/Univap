@@ -25,6 +25,11 @@ const PostDetailModal = ({ postId, onClose }) => {
     if (postId) fetchPost();
   }, [postId]);
 
+  const handleChat = () => {
+    // 여기에 채팅방 이동 로직 구현 (예: postId 기반 라우팅)
+    alert('채팅방으로 이동합니다 (예: /chat/' + postId + ')');
+  };
+
   if (loading) return <div className="detail-modal-backdrop">로딩 중...</div>;
   if (!post)
     return (
@@ -55,11 +60,18 @@ const PostDetailModal = ({ postId, onClose }) => {
           <span className="label">내용</span>
           <p className="content-text">{post.content}</p>
         </div>
+
         <div className="detail-modal-btns">
           <Button
-            label="닫기"
+            label="취소"
             onClick={onClose}
             className="modal-btn gray-btn"
+          />
+          <Button
+            label="채팅"
+            onClick={handleChat}
+            variant="primary"
+            className="modal-btn"
           />
         </div>
       </div>
