@@ -172,4 +172,22 @@ public class UserController {
         List<PostListResponse> myPostListResponses = myPostList.stream().map(PostListResponse::fromEntity).collect(Collectors.toList());
         return ResponseEntity.ok(myPostListResponses);
     }
+
+    @GetMapping("/check-nickname")
+    public ResponseEntity<?> checkNickname(@RequestParam String nickname) {
+        if (nickname == null || nickname.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "닉네임을 입력해주세요."
+            ));
+        }
+
+        boolean exists = userRepository.existsByNickname(nickname);
+        return ResponseEntity.ok(Map.of(
+                "exists", exists,
+                "success", true,
+                "message", exists ? "이미 사용 중인 닉네임입니다." : "사용 가능한 닉네임입니다."
+        ));
+    }
+
 }
