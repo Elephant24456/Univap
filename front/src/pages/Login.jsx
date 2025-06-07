@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import InputField from '../components/InputField';
-import logo from '../assets/logo.png';
-import openEye from '../assets/open-eye.png';
-import closeEye from '../assets/close-eye.png';
-import backIcon from '../assets/back.png';
 import './Login.css';
 import '../index.css';
+import logo from '../assets/logo-spork.png';
+import { FaRegEye } from 'react-icons/fa';
+import { FaRegEyeSlash } from 'react-icons/fa';
+import backIcon from '../assets/back.png';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,9 +39,10 @@ const Login = () => {
         localStorage.setItem('id', result.id);
         localStorage.setItem('nickname', result.nickname);
         localStorage.setItem('email', email);
+
         navigate('/home');
       } else {
-        alert('로그인 실패: ' + result.message);
+        toast.error('로그인 실패: ' + result.message);
       }
     } catch (error) {
       console.error('🚨 서버 연결 실패:', error);
@@ -57,11 +59,9 @@ const Login = () => {
         className="back-button"
         onClick={() => navigate('/')}
       />
-
       {/* 로고 */}
-      <img src={logo} alt="Univap 로고" className="text-logo" />
+      <img src={logo} alt="Univap 로고" className="logo" />
       <h2 className="login-title">로그인</h2>
-
       {/* 이메일 */}
       <p>이메일</p>
       <InputField
@@ -70,7 +70,6 @@ const Login = () => {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-
       {/* 비밀번호 */}
       <p>비밀번호</p>
       <InputField
@@ -80,21 +79,20 @@ const Login = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         icon={
-          <img
-            src={showPassword ? closeEye : openEye}
-            alt="비밀번호 보기"
-            className="password-toggle-icon"
-          />
+          showPassword ? (
+            <FaRegEyeSlash className="password-toggle-icon" />
+          ) : (
+            <FaRegEye className="password-toggle-icon" />
+          )
         }
         onIconClick={() => setShowPassword((prev) => !prev)}
       />
 
       {/* 로그인 */}
       <Button label="로그인" onClick={handleLogin} variant="primary" />
-
       {/* 회원가입 */}
       <p>
-        계정이 없으신가요?{' '}
+        계정이 없으신가요?
         <span onClick={() => navigate('/signup')}>회원가입</span>
       </p>
     </div>

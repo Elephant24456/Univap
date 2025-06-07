@@ -31,6 +31,7 @@ public class User {
     private String image;
 
     @ManyToMany(mappedBy = "chatRoomMembers")
+    @ToString.Exclude
     private Set<ChatRoom> chatRooms = new HashSet<>();
 }
 
