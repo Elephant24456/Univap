@@ -80,6 +80,9 @@ public class UserController {
         // 해싱 적용
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
+        //이미지 기본 설정
+        user.setImage("");
+
         userRepository.save(user);
         return ResponseEntity.ok(Map.of("success", true, "message", "회원가입 성공"));
     }
