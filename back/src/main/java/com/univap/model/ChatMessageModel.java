@@ -2,9 +2,10 @@ package com.univap.model;
 
 import java.time.LocalDateTime;
 
-public record ChatMessage(
+public record ChatMessageModel(
+        String chatRoomId,
         String content,
-        String sender,
+        Long senderId,
         MessageType type,
         LocalDateTime timestamp
 ) {
@@ -15,7 +16,7 @@ public record ChatMessage(
     }
 
     // JDK 21의 레코드 기능으로 간결한 데이터 클래스 정의
-    public ChatMessage withTimestamp() {
-        return new ChatMessage(content, sender, type, LocalDateTime.now());
+    public ChatMessageModel withTimestamp() {
+        return new ChatMessageModel(chatRoomId, content, senderId, type, LocalDateTime.now());
     }
 }

@@ -6,7 +6,7 @@ USE capstone_db; #capstone_db 사용
 
 SELECT * FROM user; #유저 목록 조회
 
-DELETE FROM user WHERE id = 1; #특정 유저 삭제
+DELETE FROM user WHERE id = 3; #특정 유저 삭제
 
 ALTER TABLE user AUTO_INCREMENT = 1; #AUTO_INCREMENT 초기화
 
@@ -35,5 +35,31 @@ SELECT * FROM post;
 #포스트 삭제
 DELETE FROM post WHERE id = 1;
 
+
 #auto_increment초기화
 ALTER TABLE post AUTO_INCREMENT = 1;
+
+
+#채팅 관련
+SELECT * FROM chat_message
+WHERE chat_room_id = '44f51431-f031-4916-b261-fb47bdf07089';
+
+SHOW TABLES;
+
+SELECT * FROM chat_message;
+
+SELECT * FROM chat_room;
+
+DESCRIBE user;
+DESCRIBE chat_room_members;
+DESCRIBE chat_message;
+SELECT * FROM chat_room_members;
+
+SET FOREIGN_KEY_CHECKS=0;
+TRUNCATE TABLE chat_message;
+TRUNCATE TABLE chat_room_members;
+TRUNCATE TABLE chat_room;
+SET FOREIGN_KEY_CHECKS=1;
+
+
+UPDATE user SET password = '$2a$10$....' WHERE id = ...;

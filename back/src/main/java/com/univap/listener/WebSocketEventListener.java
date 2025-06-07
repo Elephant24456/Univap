@@ -1,6 +1,6 @@
 package com.univap.listener;
 
-import com.univap.model.ChatMessage;
+import com.univap.model.ChatMessageModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +31,19 @@ public class WebSocketEventListener {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
         String username = (String) headerAccessor.getSessionAttributes().get("username");
+        String chatRoomId = (String) headerAccessor.getSessionAttributes().get("chatRoomId");
         if(username != null) {
             logger.info("User Disconnected : " + username);
 
-            var chatMessage = new ChatMessage(
+            var chatMessage = new ChatMessageModel(
+                    chatRoomId,
                     username + " left the chat!",
-                    username,
-                    ChatMessage.MessageType.LEAVE,
+                    null,
+                    ChatMessageModel.MessageType.LEAVE,
                     LocalDateTime.now()
             );
 
-            messagingTemplate.convertAndSend("/topic/public", chatMessage);
+            messagingTemplate.convertAndSend("/topic/chatroom/" + chatRoomId, chatMessage);
         }
     }
 }

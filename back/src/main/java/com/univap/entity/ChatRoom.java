@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "ChatRoom")
+@Table(name = "chat_room")
 @DynamicUpdate
 @Builder
 @NoArgsConstructor
@@ -30,7 +30,7 @@ public class ChatRoom {
     private ChatMessage lastChatMsg;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "ChatRoom_Members",
+    @JoinTable(name = "chat_room_members",
             joinColumns = @JoinColumn(name = "chatRoomId"),
             inverseJoinColumns = @JoinColumn(name = "userId"))
     private Set<User> chatRoomMembers = new HashSet<>();
