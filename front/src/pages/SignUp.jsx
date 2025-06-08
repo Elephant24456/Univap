@@ -119,7 +119,7 @@ const SignUp = () => {
         univ,
       });
 
-      alert(res.data); // ex) "회원가입 성공"
+      alert(res.data.message || '회원가입이 완료되었습니다.');
       navigate('/home');
     } catch (error) {
       toast.error('회원가입 실패: ' + (error.response?.data || error.message));
