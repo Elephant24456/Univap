@@ -52,15 +52,15 @@ const PostDetailModal = ({ postId, onClose }) => {
         </div>
         <h2 className="modal-title-text">{post.title}</h2>
         <div className="detail-item">
-          <span className="label">날짜</span>
+          <span className="label">약속 날짜</span>
           <span className="label-info">{post.date}</span>
         </div>
         <div className="detail-item">
-          <span className="label">시간</span>
+          <span className="label">약속 시간</span>
           <span className="label-info">{post.time}</span>
         </div>
         <div className="detail-item">
-          <span className="label">장소</span>
+          <span className="label">약속 장소</span>
           <span className="label-info">{post.location}</span>
         </div>
         <div className="detail-item">

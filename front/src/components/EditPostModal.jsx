@@ -51,7 +51,7 @@ const EditPostModal = ({ post, onSave, onClose }) => {
           <hr />
         </div>
         <div className="input-group">
-          <label>날짜</label>
+          <label>약속 날짜</label>
           <input
             type="date"
             value={date}
@@ -59,7 +59,7 @@ const EditPostModal = ({ post, onSave, onClose }) => {
           />
         </div>
         <div className="input-group">
-          <label>시간</label>
+          <label>약속 시간</label>
           <input
             type="time"
             value={time}
@@ -67,7 +67,7 @@ const EditPostModal = ({ post, onSave, onClose }) => {
           />
         </div>
         <div className="input-group">
-          <label>장소</label>
+          <label>약속 장소</label>
           <input
             type="text"
             placeholder="장소를 입력해주세요"
