@@ -6,6 +6,7 @@ import Home from "../pages/Home";
 import Write from "../pages/Write";
 import MyPage from "../pages/MyPage";
 import Chatting from "../pages/Chatting";
+import ChatList from "../pages/ChatList";
 
 const Router = () => {
   return (
@@ -18,6 +19,7 @@ const Router = () => {
         <Route path="/write" element={<Write />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/chatting" element={<Chatting />} />
+        <Route path="/chatlist" element={<ChatList />} />
       </Routes>
     </BrowserRouter>
   );

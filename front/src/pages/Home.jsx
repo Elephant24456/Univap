@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import BottomNavBar from "../components/BottomNavBar";
 import "../index.css";
-
 import FloatingActionButton from "../components/FloatingActionButton";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./Home.css";
 
 const Home = () => {
   const [nickname, setNickname] = useState("");
   const [activeTab, setActiveTab] = useState("home");
+  const [posts, setPosts] = useState([]);
 
   const navigate = useNavigate();
   const handleFabClick = () => {
@@ -25,6 +27,17 @@ const Home = () => {
     setNickname(storedNickname);
   }, [navigate]);
 
+  useEffect(() => {
+    // ✅ 게시글 목록 불러오기
+    axios
+      .get("http://localhost:8081/api/post/list")
+      .then((res) => {
+        console.log("불러온 게시글 데이터:", res.data);
+        setPosts(res.data);
+      })
+      .catch((err) => console.error("게시글을 불러오지 못했습니다.", err));
+  }, []);
+
   return (
     <div className="page-layout">
       {/* nickname을 Header에 전달 */}
@@ -32,9 +45,19 @@ const Home = () => {
 
       <main className="home-content">
         <div>
-          {/* 홈화면에 글쓰기 페이지 구현으로 인해 rab 버튼 간단하게 생성하고 글쓰기 */}
-          {/* 페이지 라우터만 해놨습니다. */}
-          {/* 이어서 home 작업하시면 될거같습니다. */}
+          {/* 게시글 목록 렌더링 */}
+          <ul className="post-list">
+            {posts.map((post) => (
+              <li key={post.id} className="post-item">
+                <strong className="post-title">{post.title}</strong>
+                <div className="post-meta">
+                  <span className="post-date">{post.date}</span>
+                  <span className="post-nickname">{post.nickname}</span>
+                </div>
+                <p className="post-content">{post.content}</p>
+              </li>
+            ))}
+          </ul>
           <FloatingActionButton onClick={handleFabClick} />
         </div>
       </main>
