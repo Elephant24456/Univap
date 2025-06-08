@@ -60,17 +60,28 @@ const PostDetailModal = ({ postId, onClose }) => {
         return;
       }
 
-      const response = await fetch(
-        `http://localhost:8080/api/chatroom/create?user1Id=${user.id}&user2Id=${post.userId}`,
-        {
-          method: 'POST',
-        }
-      );
+      const checkResponse = await fetch(`http://localhost:8080/api/chatroom/check?user1Id=${user.id}&user2Id=${post.userId}`);
 
-      if (!response.ok) throw new Error('채팅방 생성 실패');
+      const checkData = await checkResponse.json();
+      let chatRoomIdResponse = "";
 
-      const { id: chatRoomId } = await response.json();
-      navigate(`/chatting/${chatRoomId}`);
+      if(checkResponse.ok && checkData.chatRoomId){
+        chatRoomIdResponse = checkData.chatRoomId;
+      }
+      else {
+        const response = await fetch(
+            `http://localhost:8080/api/chatroom/create?user1Id=${user.id}&user2Id=${post.userId}`,
+            {
+              method: 'POST',
+            }
+        );
+
+        if (!response.ok) throw new Error('채팅방 생성 실패');
+
+        const {id: chatRoomId} = await response.json();
+        chatRoomIdResponse = chatRoomId;
+      }
+      navigate(`/chatting/${chatRoomIdResponse}`);
     } catch (err) {
       console.error(err.message);
     }

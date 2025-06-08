@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // location 사용
 import Header from "../components/Header";
 import BottomNavBar from "../components/BottomNavBar";
 import "./ChatList.css";
-import FloatingActionButton from "../components/FloatingActionButton";
 
 const ChatList = () => {
+  const [nickname, setNickname] = useState("");
   const [chatData, setChatData] = useState([]);
   const [activeTab, setActiveTab] = useState("chatlist");
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // //  닉네임 로컬스토리지에서 불러오기
-  // useEffect(() => {
-  //   const storedNickname = localStorage.getItem('nickname');
-  //   if (storedNickname) {
-  //     setNickname(storedNickname);
-  //   } else {
-  //     setNickname('익명'); // 없을 경우 대체 텍스트
-  //   }
+  // ✅ 닉네임을 localStorage에서 불러오고 상태에 반영
+  useEffect(() => {
+    const storedNickname = localStorage.getItem("nickname");
+    setNickname(storedNickname || "익명");
+  }, [location]); // location이 바뀔 때마다 최신 닉네임 반영
+
+  // ✅ 채팅방 목록 불러오기
   useEffect(() => {
     const fetchChatRooms = async () => {
       try {
@@ -31,17 +31,18 @@ const ChatList = () => {
         console.error("채팅방 목록 불러오기 실패", error);
       }
     };
-
     fetchChatRooms();
   }, []);
 
-  const handleFabClick = () => {
-    navigate("/write");
+  // ✅ 닉네임 변경 함수 예시 (다른 컴포넌트에서 불러와 호출 가능)
+  const handleNicknameChange = (newNickname) => {
+    localStorage.setItem("nickname", newNickname);
+    setNickname(newNickname); // 상태도 업데이트
   };
 
   return (
     <>
-      <Header />
+      <Header username={nickname} />
       <div className="chat-list-container">
         <div className="chat-list">
           {chatData.length === 0 ? (
@@ -62,22 +63,19 @@ const ChatList = () => {
                 <div className="chat-details">
                   <div className="chat-header">
                     <span className="chat-name">{chat.otherUserName}</span>
-                  </div>
-                  <div className="chat-body">
-                    <span className="chat-message">{chat.lastMessage}</span>
                     <span className="chat-time">
                       {chat.lastMessageTime
                         ? new Date(chat.lastMessageTime).toLocaleString()
                         : ""}
                     </span>
                   </div>
+                  <div className="chat-message">{chat.lastMessage}</div>
                 </div>
               </div>
             ))
           )}
         </div>
       </div>
-      <FloatingActionButton onClick={handleFabClick} />
       <BottomNavBar activeTab={activeTab} setActiveTab={setActiveTab} />
     </>
   );
