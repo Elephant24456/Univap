@@ -5,8 +5,8 @@ import InputField from '../components/InputField';
 import './Login.css';
 import '../index.css';
 import logo from '../assets/logo-spork.png';
-import { FaRegEye } from 'react-icons/fa';
-import { FaRegEyeSlash } from 'react-icons/fa';
+
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import backIcon from '../assets/back.png';
 import toast from 'react-hot-toast';
 
