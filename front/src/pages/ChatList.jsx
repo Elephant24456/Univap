@@ -1,38 +1,40 @@
-import React from "react";
-import Header from "../components/Header";
-import BottomNavBar from "../components/BottomNavBar";
-import "./ChatList.css";
+import Header from '../components/Header';
+import BottomNavBar from '../components/BottomNavBar';
+import './ChatList.css';
+import React, { useState } from 'react';
 
 const ChatList = () => {
+  const [activeTab, setActiveTab] = useState('chatlist');
+
   //임시 채팅방 데이터
   const chatData = [
     {
       id: 1,
-      name: "홍길동",
-      message: "뭐먹음",
-      time: "오전 4:43",
-      date: "2025/03/31, 12:00",
+      name: '홍길동',
+      message: '뭐먹음',
+      time: '오전 4:43',
+      date: '2025/03/31, 12:00',
     },
     {
       id: 2,
-      name: "홍길동",
-      message: "뭘봐",
-      time: "오전 4:43",
-      date: "2025/03/31, 12:00",
+      name: '홍길동',
+      message: '뭘봐',
+      time: '오전 4:43',
+      date: '2025/03/31, 12:00',
     },
     {
       id: 3,
-      name: "홍길동",
-      message: "수군수군수군",
-      time: "오전 4:43",
-      date: "2025/03/31, 12:00",
+      name: '홍길동',
+      message: '수군수군수군',
+      time: '오전 4:43',
+      date: '2025/03/31, 12:00',
     },
     {
       id: 4,
-      name: "홍길동",
-      message: "이야야야야ㅑ야야야",
-      time: "오전 4:43",
-      date: "2025/03/31, 12:00",
+      name: '홍길동',
+      message: '이야야야야ㅑ야야야',
+      time: '오전 4:43',
+      date: '2025/03/31, 12:00',
     },
   ];
 
@@ -58,7 +60,7 @@ const ChatList = () => {
           ))}
         </div>
       </div>
-      <BottomNavBar />
+      <BottomNavBar activeTab={activeTab} setActiveTab={setActiveTab} />
     </>
   );
 };
