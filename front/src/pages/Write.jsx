@@ -8,6 +8,7 @@ import '../index.css';
 import toast from 'react-hot-toast';
 
 const Write = () => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
 
   // "id" 키로만 가져온다
@@ -40,17 +41,14 @@ const Write = () => {
     setError('');
 
     try {
-      const response = await axios.post(
-        'http://localhost:8080/api/post/write',
-        {
-          title,
-          date,
-          time,
-          location,
-          content,
-          userId: Number(userId),
-        }
-      );
+      const response = await axios.post(`${API_URL}/api/post/write`, {
+        title,
+        date,
+        time,
+        location,
+        content,
+        userId: Number(userId),
+      });
 
       console.log('post 작성 결과:', response.data);
 

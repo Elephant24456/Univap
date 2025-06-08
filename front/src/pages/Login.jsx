@@ -10,6 +10,7 @@ import { GrPrevious } from 'react-icons/gr';
 import toast from 'react-hot-toast';
 
 const Login = () => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/user/login', {
+      const response = await fetch(`${API_URL}/api/user/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
