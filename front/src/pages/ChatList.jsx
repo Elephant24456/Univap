@@ -9,6 +9,16 @@ const ChatList = () => {
   const [activeTab, setActiveTab] = useState('chatlist');
   const navigate = useNavigate();
 
+<<<<<<< HEAD
+  //  닉네임 로컬스토리지에서 불러오기
+  useEffect(() => {
+    const storedNickname = localStorage.getItem('nickname');
+    if (storedNickname) {
+      setNickname(storedNickname);
+    } else {
+      setNickname('익명'); // 없을 경우 대체 텍스트
+    }
+=======
   useEffect(() => {
     const fetchChatRooms = async () => {
       try {
@@ -22,6 +32,7 @@ const ChatList = () => {
     };
 
     fetchChatRooms();
+>>>>>>> a1c36f1b299d001e050cecd65da4ca1da7cca798
   }, []);
 
   return (
