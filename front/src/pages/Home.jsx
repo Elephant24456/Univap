@@ -1,42 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import Header from '../components/Header';
-import BottomNavBar from '../components/BottomNavBar';
-import FloatingActionButton from '../components/FloatingActionButton';
-import PostDetailModal from './PostDetailModal';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import '../index.css';
-import './Home.css';
+import React, { useState, useEffect } from "react";
+import Header from "../components/Header";
+import BottomNavBar from "../components/BottomNavBar";
+import FloatingActionButton from "../components/FloatingActionButton";
+import PostDetailModal from "./PostDetailModal";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "../index.css";
+import "./Home.css";
 
 const Home = () => {
-  const [nickname, setNickname] = useState('');
-  const [activeTab, setActiveTab] = useState('home');
+  const [nickname, setNickname] = useState("");
+  const [activeTab, setActiveTab] = useState("home");
   const [posts, setPosts] = useState([]);
   const [selectedPostId, setSelectedPostId] = useState(null); // 모달용 상태
 
   const navigate = useNavigate();
 
   const handleFabClick = () => {
-    navigate('/write');
+    navigate("/write");
   };
 
   useEffect(() => {
-    const storedNickname = localStorage.getItem('nickname');
-    if (!storedNickname) {
-      alert('로그인이 필요합니다.');
-      window.location.href = '/login';
+    const userJson = localStorage.getItem("user");
+    if (!userJson) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
       return;
     }
-    setNickname(storedNickname);
+    try {
+      const user = JSON.parse(userJson);
+      if (!user.nickname) throw new Error("닉네임 정보 없음");
+      setNickname(user.nickname);
+    } catch {
+      alert("로그인 정보가 올바르지 않습니다.");
+      navigate("/login");
+    }
   }, [navigate]);
 
   useEffect(() => {
     axios
-      .get('http://localhost:8080/api/post/list')
+      .get("http://localhost:8080/api/post/list")
       .then((res) => {
         setPosts(res.data);
       })
-      .catch((err) => console.error('게시글을 불러오지 못했습니다.', err));
+      .catch((err) => console.error("게시글을 불러오지 못했습니다.", err));
   }, []);
 
   return (
@@ -50,7 +57,7 @@ const Home = () => {
               key={post.id}
               className="post-item"
               onClick={() => setSelectedPostId(post.id)} // 클릭 시 모달 열기
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               <strong className="post-title">{post.title}</strong>
               <div className="post-meta">
