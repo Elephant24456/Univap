@@ -8,6 +8,8 @@ import axios from 'axios';
 import '../index.css';
 import './Home.css';
 
+import toast, { Toaster } from 'react-hot-toast';
+
 const Home = () => {
   const [nickname, setNickname] = useState('');
   const [activeTab, setActiveTab] = useState('home');
@@ -23,7 +25,7 @@ const Home = () => {
   useEffect(() => {
     const storedNickname = localStorage.getItem('nickname');
     if (!storedNickname) {
-      alert('로그인이 필요합니다.');
+      toast.error('로그인이 필요합니다.');
       window.location.href = '/login';
       return;
     }
