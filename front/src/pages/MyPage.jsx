@@ -21,8 +21,8 @@ const MyPage = () => {
 
   useEffect(() => {
     const storedNickname = localStorage.getItem('nickname');
-    const storedImage = localStorage.getItem('profileImage');
     const storedId = localStorage.getItem('id');
+    const email = localStorage.getItem('email');
 
     if (!storedNickname || !storedId) {
       alert('로그인이 필요합니다.');
@@ -31,17 +31,26 @@ const MyPage = () => {
     }
 
     setNickname(storedNickname);
-    if (storedImage) setProfileImage(storedImage);
 
+    // ✅ 서버에서 최신 프로필 이미지 불러오기
+    fetch(`http://localhost:8080/api/user/me/image/view?email=${email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.profileImage) {
+          setProfileImage(data.profileImage);
+          localStorage.setItem('profileImage', data.profileImage);
+        } else {
+          setProfileImage('');
+        }
+      })
+      .catch(() => setProfileImage(''));
+
+    // ✅ 작성한 글 불러오기
     fetch(`http://localhost:8080/api/user/${storedId}/posts`)
       .then((res) => res.json())
-      .then((posts) => {
-        setMyPosts(posts);
-        console.log(posts);
-      });
+      .then((posts) => setMyPosts(posts));
   }, []);
 
-  // 글 수정 저장
   const handlePostUpdate = async (editedPost) => {
     try {
       const res = await fetch(
@@ -69,18 +78,16 @@ const MyPage = () => {
       } else {
         toast.error(result.message || '수정 실패');
       }
-    } catch (err) {
+    } catch {
       toast.error('수정 중 오류 발생');
     }
   };
 
-  // 글 수정 취소
   const handleEditCancel = () => {
     setEditingPost(null);
     toast.success('수정이 취소되었습니다.');
   };
 
-  // 글 삭제
   const handlePostDelete = async (postId) => {
     const result = await Swal.fire({
       title: '정말 삭제하시겠습니까?',
@@ -109,23 +116,20 @@ const MyPage = () => {
           }
         );
         const data = await res.json();
-
         if (data.success) {
           setMyPosts(myPosts.filter((post) => post.id !== postId));
           toast.success('글이 삭제되었습니다!');
         } else {
           toast.error(data.message || '삭제 실패');
         }
-      } catch (err) {
+      } catch {
         toast.error('서버 오류가 발생했습니다.');
       }
     } else {
-      // 취소 버튼 눌렀을 때
       toast('삭제가 취소되었습니다.', { icon: '❎' });
     }
   };
 
-  // 닉네임 변경
   const handleNicknameChange = async (newNickname) => {
     const email = localStorage.getItem('email');
     setNickname(newNickname);
@@ -143,15 +147,15 @@ const MyPage = () => {
       } else {
         toast.error(result.message || '프로필 저장 실패');
       }
-    } catch (err) {
+    } catch {
       toast.error('프로필 저장 실패');
     }
   };
 
-  // 프로필 이미지 변경
   const handleImageChange = async (newImage) => {
     const email = localStorage.getItem('email');
     setProfileImage(newImage);
+    localStorage.setItem('profileImage', newImage);
 
     try {
       const res = await fetch(`http://localhost:8080/api/user/me/image`, {
@@ -165,12 +169,11 @@ const MyPage = () => {
       } else {
         toast.error(result.message || '프로필 사진 변경 실패');
       }
-    } catch (err) {
+    } catch {
       toast.error('프로필 사진 변경 실패');
     }
   };
 
-  // 프로필 편집 닫기 (취소)
   const handleProfileEditCancel = () => {
     setIsModalOpen(false);
   };
@@ -190,16 +193,14 @@ const MyPage = () => {
         </div>
         <Button
           label="프로필 편집"
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
+          onClick={() => setIsModalOpen(true)}
           variant="primary"
         />
       </section>
 
       {isModalOpen && (
         <ProfileModal
-          onClose={handleProfileEditCancel} // 취소 시 토스트
+          onClose={handleProfileEditCancel}
           onNicknameChange={handleNicknameChange}
           onImageChange={handleImageChange}
         />
@@ -246,7 +247,6 @@ const MyPage = () => {
                     </div>
                     <div className="post-card-content">{post.content}</div>
                   </div>
-                  {/* > 버튼 클릭 시 수정 모달 */}
                   <IoIosArrowForward
                     className="post-card-arrow"
                     size={20}
@@ -263,15 +263,15 @@ const MyPage = () => {
         </div>
       </section>
 
-      {/* 수정 모달 */}
       {editingPost && (
         <EditPostModal
           post={editingPost}
           onSave={handlePostUpdate}
           onDelete={handlePostDelete}
-          onClose={handleEditCancel} // 취소 시 토스트 알림
+          onClose={handleEditCancel}
         />
       )}
+
       <BottomNavBar activeTab={activeTab} setActiveTab={setActiveTab} />
     </div>
   );
