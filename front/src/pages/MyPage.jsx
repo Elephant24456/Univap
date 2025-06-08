@@ -25,7 +25,7 @@ const MyPage = () => {
     const email = localStorage.getItem('email');
 
     if (!storedNickname || !storedId) {
-      a toast.errorlert('로그인이 필요합니다.');
+      toast.error('로그인이 필요합니다.');
       window.location.href = '/login';
       return;
     }
