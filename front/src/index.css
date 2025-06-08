@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
 .page-layout {
   font-family: 'Noto Sans KR', sans-serif;
   max-width: 375px;
