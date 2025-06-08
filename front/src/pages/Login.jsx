@@ -11,7 +11,9 @@ import backIcon from '../assets/back.png';
 import toast from 'react-hot-toast';
 
 const Login = () => {
+
   const API_URL = process.env.REACT_APP_API_URL;
+
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -20,6 +22,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
+
       const response = await fetch(
         `
         ${API_URL}/api/user/login`,
@@ -34,6 +37,7 @@ const Login = () => {
           }),
         }
       );
+
 
       const result = await response.json();
 

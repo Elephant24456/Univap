@@ -12,7 +12,9 @@ import './MyPage.css';
 import '../index.css';
 
 const MyPage = () => {
+
   const API_URL = process.env.REACT_APP_API_URL;
+
 
   const [nickname, setNickname] = useState('');
   const [profileImage, setProfileImage] = useState('');

@@ -3,7 +3,9 @@ import Button from './Button';
 import './PostDetailModal.css';
 
 const PostDetailModal = ({ postId, onClose }) => {
+
   const API_URL = process.env.REACT_APP_API_URL;
+
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
 

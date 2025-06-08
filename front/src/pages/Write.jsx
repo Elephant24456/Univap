@@ -8,7 +8,9 @@ import '../index.css';
 import toast from 'react-hot-toast';
 
 const Write = () => {
+
   const API_URL = process.env.REACT_APP_API_URL;
+
   const navigate = useNavigate();
 
   // "id" 키로만 가져온다
