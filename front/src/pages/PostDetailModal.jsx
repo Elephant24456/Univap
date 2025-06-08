@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import Button from './Button';
+import { useNavigate } from 'react-router-dom';
+import Button from '../components/Button';
 import './PostDetailModal.css';
 
 const PostDetailModal = ({ postId, onClose }) => {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/posts/${postId}`
+          `http://localhost:8080/api/post/${postId}`
         );
         if (!response.ok) throw new Error('게시글 조회 실패');
         const data = await response.json();
@@ -26,8 +28,7 @@ const PostDetailModal = ({ postId, onClose }) => {
   }, [postId]);
 
   const handleChat = () => {
-    // 여기에 채팅방 이동 로직 구현 (예: postId 기반 라우팅)
-    alert('채팅방으로 이동합니다 (예: /chat/' + postId + ')');
+    navigate(`/chat/${postId}`);
   };
 
   if (loading) return <div className="detail-modal-backdrop">로딩 중...</div>;
@@ -63,12 +64,12 @@ const PostDetailModal = ({ postId, onClose }) => {
 
         <div className="detail-modal-btns">
           <Button
-            label="취소"
+            label="취소하기"
             onClick={onClose}
             className="modal-btn gray-btn"
           />
           <Button
-            label="채팅"
+            label="채팅으로 가기"
             onClick={handleChat}
             variant="primary"
             className="modal-btn"

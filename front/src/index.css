@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
 * {
   box-sizing: border-box;
 }
 
 .page-layout {
-  font-family: 'Pretendard-Regular';
+  font-family: 'Noto Sans KR', sans-serif;
   max-width: 375px;
   margin: 0 auto;
   display: flex;
