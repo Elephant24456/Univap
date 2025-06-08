@@ -23,6 +23,37 @@
   gap: 12px;
 }
 
+/* 상단 타이틀 + 닫기 버튼 */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0 0;
+}
+
+.modal-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.exit-icon {
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
+}
+
+/* 제목 + 아래 구분선 */
+.modal-title-text {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 4px 0 6px;
+  color: #222;
+  position: relative;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
 .detail-item {
   display: flex;
   flex-direction: column;

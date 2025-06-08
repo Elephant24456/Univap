@@ -152,7 +152,6 @@ const MyPage = () => {
   const handleImageChange = async (newImage) => {
     const email = localStorage.getItem('email');
     setProfileImage(newImage);
-    localStorage.setItem('profileImage', newImage);
 
     try {
       const res = await fetch(`http://localhost:8080/api/user/me/image`, {
