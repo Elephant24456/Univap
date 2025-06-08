@@ -30,12 +30,12 @@ const SignUp = () => {
 
   const handleVerifyCode = async () => {
     if (!email || !inputAuthCode) {
-      alert('이메일과 인증번호를 모두 입력해주세요.');
+      toast.error('이메일과 인증번호를 모두 입력해주세요.');
       return;
     }
 
     if (!univ) {
-      alert('대학교명을 먼저 입력해주세요.');
+      toast.error('대학교명을 먼저 입력해주세요.');
       return;
     }
 
@@ -53,7 +53,7 @@ const SignUp = () => {
         toast.error('인증 실패: ' + res.data);
       }
     } catch (error) {
-      alert('인증 실패: ' + (error.response?.data || error.message));
+      toast.error('인증 실패: ' + (error.response?.data || error.message));
     }
   };
 
@@ -74,7 +74,7 @@ const SignUp = () => {
         univName: univ, // ← 수정
       });
 
-      alert(res.data);
+      toast(res.data);
       setAuthCodeSent(true);
     } catch (error) {
       if (error.response) {
@@ -83,9 +83,9 @@ const SignUp = () => {
             ? error.response.data
             : error.response.data.message ||
               JSON.stringify(error.response.data);
-        alert(message);
+        toast(message);
       } else {
-        alert('요청 중 오류 발생: ' + error.message);
+        toast.error('요청 중 오류 발생: ' + error.message);
       }
     }
   };
@@ -119,7 +119,7 @@ const SignUp = () => {
         univ,
       });
 
-      alert(res.data); // ex) "회원가입 성공"
+      toast.success(res.data); // ex) "회원가입 성공"
       navigate('/home');
     } catch (error) {
       toast.error('회원가입 실패: ' + (error.response?.data || error.message));
