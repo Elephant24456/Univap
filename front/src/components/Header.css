@@ -1,4 +1,6 @@
 .header {
+  position: fixed;
+  margin-bottom: 10px;
   top: 0;
 
   width: 100%;
@@ -19,4 +21,9 @@
   width: 30px;
   height: 30px;
   object-fit: cover;
+}
+
+.page-layout main,
+.home-content main {
+  padding-top: 20px; /* header 높이만큼 */
 }
