@@ -1,12 +1,28 @@
 import Header from '../components/Header';
 import BottomNavBar from '../components/BottomNavBar';
 import './ChatList.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ChatList = () => {
   const [activeTab, setActiveTab] = useState('chatlist');
+  const [nickname, setNickname] = useState('');
 
-  //임시 채팅방 데이터
+  // ✅ 닉네임 로컬스토리지에서 불러오기
+  useEffect(() => {
+    const userJson = localStorage.getItem('user');
+    if (userJson) {
+      try {
+        const user = JSON.parse(userJson);
+        if (user.nickname) {
+          setNickname(user.nickname);
+        }
+      } catch (e) {
+        console.error('유저 정보 파싱 오류:', e);
+      }
+    }
+  }, []);
+
+  // 임시 채팅방 데이터
   const chatData = [
     {
       id: 1,
@@ -40,7 +56,7 @@ const ChatList = () => {
 
   return (
     <>
-      <Header />
+      <Header username={nickname} />
       <div className="chat-list-container">
         <div className="chat-list">
           {chatData.map((chat) => (
