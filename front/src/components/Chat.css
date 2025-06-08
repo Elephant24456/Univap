@@ -14,13 +14,15 @@
 }
 
 .chat-header {
-  padding: 16px;
+  height: 50px;
+  padding: 0 16px;
   border-bottom: 1px solid #eee;
   font-weight: bold;
   font-size: 16px;
+
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .chat-header h2 {

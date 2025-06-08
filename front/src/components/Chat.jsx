@@ -14,9 +14,10 @@ const Chat = () => {
 
   const { chatRoomId } = useParams();
 
-  // ✅ 로그인 유저 정보 (예: localStorage에서 가져오기)
-  const user = JSON.parse(localStorage.getItem('user')); // { id, email, nickname, ... }
-  const username = user?.nickname || '알 수 없음';
+  // 로그인 유저 정보 (예: localStorage에서 가져오기)
+  const user = JSON.parse(localStorage.getItem('user'));
+  const username =
+    localStorage.getItem('nickname') || user?.nickname || '알 수 없음';
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

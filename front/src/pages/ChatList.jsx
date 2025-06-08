@@ -7,18 +7,13 @@ const ChatList = () => {
   const [activeTab, setActiveTab] = useState('chatlist');
   const [nickname, setNickname] = useState('');
 
-  // ✅ 닉네임 로컬스토리지에서 불러오기
+  //  닉네임 로컬스토리지에서 불러오기
   useEffect(() => {
-    const userJson = localStorage.getItem('user');
-    if (userJson) {
-      try {
-        const user = JSON.parse(userJson);
-        if (user.nickname) {
-          setNickname(user.nickname);
-        }
-      } catch (e) {
-        console.error('유저 정보 파싱 오류:', e);
-      }
+    const storedNickname = localStorage.getItem('nickname');
+    if (storedNickname) {
+      setNickname(storedNickname);
+    } else {
+      setNickname('익명'); // 없을 경우 대체 텍스트
     }
   }, []);
 
