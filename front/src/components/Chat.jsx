@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
-import webSocketService from "../services/WebSocketService";
-import "../components/Chat.css";
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import webSocketService from '../services/WebSocketService';
+import '../components/Chat.css';
+import { FaLocationArrow } from 'react-icons/fa';
+import { IoArrowBack } from 'react-icons/io5';
 
 const Chat = () => {
-  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+  const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
   const [connected, setConnected] = useState(false);
@@ -12,11 +15,11 @@ const Chat = () => {
   const { chatRoomId } = useParams();
 
   // ✅ 로그인 유저 정보 (예: localStorage에서 가져오기)
-  const user = JSON.parse(localStorage.getItem("user")); // { id, email, nickname, ... }
-  const username = user?.nickname || "알 수 없음";
+  const user = JSON.parse(localStorage.getItem('user')); // { id, email, nickname, ... }
+  const username = user?.nickname || '알 수 없음';
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -50,7 +53,7 @@ const Chat = () => {
     if (!message.trim()) return;
 
     if (!connected) {
-      alert("WebSocket이 아직 연결되지 않았습니다. 잠시 후 다시 시도해주세요.");
+      alert('WebSocket이 아직 연결되지 않았습니다. 잠시 후 다시 시도해주세요.');
       return;
     }
 
@@ -58,33 +61,39 @@ const Chat = () => {
       chatRoomId,
       content: message,
       senderId: user.id,
-      type: "CHAT",
+      type: 'CHAT',
     };
 
     webSocketService.sendMessage(chatRoomId, chatMessage);
-    setMessage("");
+    setMessage('');
   };
 
   const getMessageClass = (msg) => {
-    if (msg.type === "JOIN" || msg.type === "LEAVE") {
-      return "event-message";
+    if (msg.type === 'JOIN' || msg.type === 'LEAVE') {
+      return 'event-message';
     }
 
     // senderId가 존재하고, 유저 ID가 같으면 내 메시지로 간주
-    return msg.senderId === user.id ? "my-message" : "other-message";
+    return msg.senderId === user.id ? 'my-message' : 'other-message';
   };
 
   return (
     <div className="chat-container">
       <div className="chat-box">
         <div className="chat-header">
-          <h2>WebSocket Chat</h2>
-          <p>접속 닉네임: {username}</p>
+          <div className="chat-header-row">
+            <IoArrowBack
+              className="back-icon"
+              size={24}
+              onClick={() => navigate('/home')}
+            />
+            <p className="chat-username">접속 닉네임: {username}</p>
+          </div>
         </div>
         <div className="messages-container">
           {messages.map((msg, index) => (
             <div key={index} className={`message ${getMessageClass(msg)}`}>
-              {msg.type === "CHAT" && (
+              {msg.type === 'CHAT' && (
                 <div className="message-sender">{msg.sender}</div>
               )}
               <div className="message-content">{msg.content}</div>
@@ -104,7 +113,9 @@ const Chat = () => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-          <button type="submit">보내기</button>
+          <button type="submit">
+            <FaLocationArrow />
+          </button>
         </form>
       </div>
     </div>
