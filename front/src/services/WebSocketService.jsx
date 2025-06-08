@@ -1,37 +1,29 @@
-import { Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
+import { Client } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
 
 const MessageType = {
-  CHAT: 'CHAT',
-  JOIN: 'JOIN',
-  LEAVE: 'LEAVE',
+  CHAT: "CHAT",
+  JOIN: "JOIN",
+  LEAVE: "LEAVE",
 };
 
-const websocketUrl = 'http://localhost:8080/ws';
+const websocketUrl = "http://localhost:8080/ws";
 
 class WebSocketService {
   constructor() {
     this.client = new Client({
-      webSocketFactory: () => new SockJS(websocketUrl), // 직접 URL 넣기
-      debug: (str) => {
-        console.log(str);
-      },
+      webSocketFactory: () => new SockJS(websocketUrl),
+      debug: (str) => console.log(str),
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
     });
 
     this.messageCallbacks = new Set();
-
     this.client.onConnect = this.onConnect.bind(this);
     this.client.onStompError = this.onStompError.bind(this);
-  }
-
-  connect(username) {
-    if (!this.client) return;
-
-    this.client.activate();
-    localStorage.setItem('chat_username', username);
+    this.chatRoomId = null;
+    this.username = null;
   }
 
   disconnect() {
@@ -40,29 +32,42 @@ class WebSocketService {
     }
   }
 
-  subscribeToMessages(callback) {
+  subscribeToMessages(chatRoomId, callback) {
+    this.chatRoomId = chatRoomId;
+
+    const subscription = this.client.subscribe(
+      `/topic/chatroom/${chatRoomId}`,
+      (message) => {
+        console.log("✅ STOMP 메시지 수신됨:", message); // 여기도 로그 추가
+        try {
+          const chatMessage = JSON.parse(message.body);
+          this.messageCallbacks.forEach((cb) => cb(chatMessage));
+        } catch (e) {
+          console.error("Error parsing message", e);
+        }
+      }
+    );
+
     this.messageCallbacks.add(callback);
 
     return () => {
+      subscription.unsubscribe();
       this.messageCallbacks.delete(callback);
     };
   }
 
-  sendMessage(message) {
-    if (!this.client || !this.client.connected) {
-      console.error('WebSocket is not connected');
-      return;
+  sendMessage(chatRoomId, chatMessage) {
+    if (this.client && this.client.connected) {
+      this.client.publish({
+        destination: "/app/chat.sendMessage", // 서버 @MessageMapping 경로
+        body: JSON.stringify(chatMessage),
+      });
     }
-
-    this.client.publish({
-      destination: '/app/chat.sendMessage',
-      body: JSON.stringify(message),
-    });
   }
 
-  joinChat(username) {
+  joinChat(chatRoomId, username) {
     if (!this.client || !this.client.connected) {
-      console.error('WebSocket is not connected');
+      console.error("WebSocket is not connected");
       return;
     }
 
@@ -70,35 +75,34 @@ class WebSocketService {
       sender: username,
       content: `${username} joined the chat`,
       type: MessageType.JOIN,
+      chatRoomId: chatRoomId, // 꼭 포함되어야 서버가 대상 룸을 알 수 있음
     };
 
     this.client.publish({
-      destination: '/app/chat.addUser',
+      destination: "/app/chat.sendMessage",
       body: JSON.stringify(message),
     });
   }
 
+  connect(username, onConnected) {
+    if (!this.client) return;
+    this.username = username;
+
+    // ✅ 연결된 후 실행할 콜백 저장
+    this.onConnected = onConnected;
+    this.client.activate();
+  }
+
   onConnect() {
-    console.log('Connected to WebSocket');
+    console.log("Connected to WebSocket");
 
-    const username = localStorage.getItem('chat_username');
-
-    if (username) {
-      this.client.subscribe('/topic/public', (message) => {
-        try {
-          const chatMessage = JSON.parse(message.body);
-          this.messageCallbacks.forEach((callback) => callback(chatMessage));
-        } catch (e) {
-          console.error('Error parsing message', e);
-        }
-      });
-
-      this.joinChat(username);
+    if (typeof this.onConnected === "function") {
+      this.onConnected(); // ✅ 연결되었을 때 콜백 실행
     }
   }
 
   onStompError(frame) {
-    console.error('STOMP error', frame);
+    console.error("STOMP error", frame);
   }
 }
 

@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import webSocketService from "../services/WebSocketService";
 import "../components/Chat.css";
 
-const generateAnonymousUsername = () => {
-  const randomNum = Math.floor(Math.random() * 1000)
-    .toString()
-    .padStart(3, "0");
-  return `익명${randomNum}`;
-};
-
 const Chat = () => {
-  const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
+  const [connected, setConnected] = useState(false);
+
+  const { chatRoomId } = useParams();
+
+  // ✅ 로그인 유저 정보 (예: localStorage에서 가져오기)
+  const user = JSON.parse(localStorage.getItem("user")); // { id, email, nickname, ... }
+  const username = user?.nickname || "알 수 없음";
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -24,31 +24,44 @@ const Chat = () => {
   }, [messages]);
 
   useEffect(() => {
-    const generatedUsername = generateAnonymousUsername();
-    setUsername(generatedUsername);
-    webSocketService.connect(generatedUsername);
+    let unsubscribe;
 
-    const unsubscribe = webSocketService.subscribeToMessages((message) => {
-      setMessages((prev) => [...prev, message]);
+    webSocketService.connect(username, () => {
+      setConnected(true); // 연결 완료 시 true로 변경
+      unsubscribe = webSocketService.subscribeToMessages(
+        chatRoomId,
+        (message) => {
+          setMessages((prev) => [...prev, message]);
+        }
+      );
+
+      webSocketService.joinChat(chatRoomId, username);
     });
 
     return () => {
-      unsubscribe();
+      if (unsubscribe) unsubscribe();
       webSocketService.disconnect();
+      setConnected(false);
     };
-  }, []);
+  }, [chatRoomId, username]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (!message.trim()) return;
 
+    if (!connected) {
+      alert("WebSocket이 아직 연결되지 않았습니다. 잠시 후 다시 시도해주세요.");
+      return;
+    }
+
     const chatMessage = {
-      sender: username,
+      chatRoomId,
       content: message,
+      senderId: user.id,
       type: "CHAT",
     };
 
-    webSocketService.sendMessage(chatMessage);
+    webSocketService.sendMessage(chatRoomId, chatMessage);
     setMessage("");
   };
 
@@ -56,7 +69,9 @@ const Chat = () => {
     if (msg.type === "JOIN" || msg.type === "LEAVE") {
       return "event-message";
     }
-    return msg.sender === username ? "my-message" : "other-message";
+
+    // senderId가 존재하고, 유저 ID가 같으면 내 메시지로 간주
+    return msg.senderId === user.id ? "my-message" : "other-message";
   };
 
   return (

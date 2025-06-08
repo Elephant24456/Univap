@@ -1,28 +1,28 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Button from '../components/Button';
-import InputField from '../components/InputField';
-import './Login.css';
-import '../index.css';
-import logo from '../assets/logo-spork.png';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Button from "../components/Button";
+import InputField from "../components/InputField";
+import "./Login.css";
+import "../index.css";
+import logo from "../assets/logo-spork.png";
 
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
-import backIcon from '../assets/back.png';
-import toast from 'react-hot-toast';
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import backIcon from "../assets/back.png";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     try {
       const response = await fetch(`http://localhost:8080/api/user/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: email,
@@ -33,16 +33,24 @@ const Login = () => {
       const result = await response.json();
 
       if (result.success) {
-        console.log('login success', result);
+        console.log("login success", result);
 
-        // 닉네임 로컬스토리지에 저장해서 다른 페이지에서 사용
-        localStorage.setItem('id', result.id);
-        localStorage.setItem('nickname', result.nickname);
-        localStorage.setItem('email', email);
+        // ✅ 여기 추가
+        localStorage.setItem("id", result.id);
+        localStorage.setItem("nickname", result.nickname);
+        localStorage.setItem("email", email);
 
-        navigate('/home');
-      } else {
-        toast.error('로그인 실패: ' + result.message);
+        // 기존 코드 유지 (user 전체도 저장)
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            id: result.id,
+            nickname: result.nickname,
+            email: email,
+          })
+        );
+
+        navigate("/home");
       }
     } catch (error) {
       console.error('🚨 서버 연결 실패:', error);
@@ -57,7 +65,7 @@ const Login = () => {
         src={backIcon}
         alt="뒤로가기"
         className="back-button"
-        onClick={() => navigate('/')}
+        onClick={() => navigate("/")}
       />
       {/* 로고 */}
       <img src={logo} alt="Univap 로고" className="logo" />
@@ -75,7 +83,7 @@ const Login = () => {
       <InputField
         label="비밀번호"
         placeholder="비밀번호를 입력해주세요."
-        type={showPassword ? 'text' : 'password'}
+        type={showPassword ? "text" : "password"}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         icon={
@@ -93,7 +101,7 @@ const Login = () => {
       {/* 회원가입 */}
       <p>
         계정이 없으신가요?
-        <span onClick={() => navigate('/signup')}>회원가입</span>
+        <span onClick={() => navigate("/signup")}>회원가입</span>
       </p>
     </div>
   );
