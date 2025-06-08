@@ -15,9 +15,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // WebSocket 연결을 위한 엔드포인트 등록
         // SockJS는 WebSocket을 지원하지 않는 브라우저를 위한 폴백 옵션
         registry.addEndpoint("/ws")
-                //.setAllowedOrigins("http://localhost:3000") // Vite 기본 포트
-                //.withSockJS();
-                .setAllowedOrigins("*");
+                .setAllowedOrigins("http://localhost:3000") // Vite 기본 포트
+                .withSockJS();
+//                .setAllowedOrigins("*");
     }
 
     @Override

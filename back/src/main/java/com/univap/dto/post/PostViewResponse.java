@@ -11,6 +11,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 public class PostViewResponse {
+    private Long userId; // 작성자 id 추가
     private String title;
     private String content;
     private String nickname;
@@ -20,6 +21,7 @@ public class PostViewResponse {
     private LocalDateTime postTime;
 
     public PostViewResponse(Post post){
+        this.userId = post.getUser().getId(); // 추가된 부분
         this.title = post.getTitle();
         this.content = post.getContent();
         this.nickname = post.getNickname();

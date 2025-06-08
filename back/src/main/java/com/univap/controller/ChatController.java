@@ -54,20 +54,27 @@ public class ChatController {
 
     @MessageMapping("chat.sendMessage")
     public void sendMessage(@Payload ChatMessageModel chatMessage){
+        System.out.println("메시지 수신됨: " + chatMessage);
         String chatRoomId = chatMessage.chatRoomId();
+
+        log.info("📩 서버에서 메시지 받음: {}", chatMessage);
 
         chatService.saveChatMessage(chatMessage, chatRoomId);
 
+        log.info("📤 서버에서 클라이언트로 메시지 발행: /topic/chatroom/" + chatRoomId);
         messagingTemplate.convertAndSend("/topic/chatroom/" + chatRoomId, chatMessage.withTimestamp());
     }
 
-    @MessageMapping("/chat.addUser")
-    public void addUser(@Payload ChatMessageModel chatMessage, SimpMessageHeaderAccessor headerAccessor) {
 
+
+
+    @MessageMapping("chat.addUser")
+    public void addUser(@Payload ChatMessageModel chatMessage, SimpMessageHeaderAccessor headerAccessor) {
+        log.info("👤 chat.addUser 도착: {}", chatMessage);
         Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", chatMessage.senderId());
         Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("chatRoomId", chatMessage.chatRoomId());
-
         messagingTemplate.convertAndSend("/topic/chatroom/" + chatMessage.chatRoomId(), chatMessage.withTimestamp());
     }
+
 
 }
