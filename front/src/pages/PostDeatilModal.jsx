@@ -3,14 +3,15 @@ import Button from './Button';
 import './PostDetailModal.css';
 
 const PostDetailModal = ({ postId, onClose }) => {
-  const API_URL = import.meta.env.VITE_API_URL;
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/posts/${postId}`);
+        const response = await fetch(
+          `http://localhost:8080/api/posts/${postId}`
+        );
         if (!response.ok) throw new Error('게시글 조회 실패');
         const data = await response.json();
         setPost(data);
