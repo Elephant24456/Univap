@@ -43,7 +43,7 @@
 }
 
 .home-content ul li::after {
-  content: "›";
+  content: '›';
   position: absolute;
   right: 16px;
   top: 50%;
@@ -76,4 +76,10 @@
   color: #000;
   white-space: pre-wrap;
   margin: 4px 0;
+  display: -webkit-box;
+
+  -webkit-line-clamp: 2; /* 최대 2줄만 보이기 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

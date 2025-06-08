@@ -118,6 +118,8 @@ const Write = () => {
             rows={6}
             value={content}
             onChange={(e) => setContent(e.target.value)}
+            maxLength={1000}
+            className="content-textarea"
           />
           <p className="rules">
             UniVap은 모두가 즐겁고 안전하게 사용할 수 있는 공간입니다.

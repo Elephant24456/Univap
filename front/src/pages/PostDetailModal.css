@@ -63,20 +63,19 @@
 .detail-item .label {
   font-weight: 600;
   font-size: 14px;
-  color: #888;
+  color: #333;
   margin-bottom: 2px;
 }
 
 .content-text {
   font-size: 16px;
-  color: #333;
+  color: #888;
   white-space: pre-wrap;
 }
 
 .detail-modal-btns {
   display: flex;
   gap: 10px;
-  margin-top: 16px;
 }
 
 .modal-btn {
@@ -101,4 +100,8 @@
 .primary {
   background: #fc703b;
   color: white;
+}
+
+.label-info {
+  color: #888;
 }
