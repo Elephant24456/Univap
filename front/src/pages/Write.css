@@ -17,7 +17,7 @@
 
 /* 제목 */
 .title {
-  margin-top: 15px;
+  margin-top: 25px;
 }
 
 hr {
@@ -36,7 +36,7 @@ hr {
 }
 /* 날짜, 시간, 장소, 내용 라벨 */
 label {
-  font-size: 14px;
+  font-size: 16px;
 }
 .input-group input {
   padding: 5px 0px;
