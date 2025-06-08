@@ -1,15 +1,8 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Button from "../components/Button";
-import "./PostDetailModal.css";
-=======
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import exitIcon from '../assets/exit.png'; // 닫기 아이콘
 import './PostDetailModal.css';
->>>>>>> 9b0fe72c5d93e2b0bbb097437c2e13e949a29a14
 
 const PostDetailModal = ({ postId, onClose }) => {
   const [post, setPost] = useState(null);
@@ -24,11 +17,11 @@ const PostDetailModal = ({ postId, onClose }) => {
         const response = await fetch(
           `http://localhost:8080/api/post/${postId}`
         );
-        if (!response.ok) throw new Error("게시글 조회 실패");
+        if (!response.ok) throw new Error('게시글 조회 실패');
         const data = await response.json();
         setPost(data);
 
-        console.log("Fetched post data:", data); // 이 부분 추가!
+        console.log('Fetched post data:', data); // 이 부분 추가!
       } catch (err) {
         console.error(err.message);
       } finally {
@@ -40,18 +33,18 @@ const PostDetailModal = ({ postId, onClose }) => {
   }, [postId]);
 
   const handleChat = async () => {
-    console.log("post in handleChat:", post); // 여기 추가
-    console.log("post.userId in handleChat:", post?.userId); // 여기 추가
+    console.log('post in handleChat:', post); // 여기 추가
+    console.log('post.userId in handleChat:', post?.userId); // 여기 추가
     try {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
+      const storedUser = JSON.parse(localStorage.getItem('user'));
       if (
         !storedUser ||
         !storedUser.id ||
         !storedUser.nickname ||
         !storedUser.email
       ) {
-        console.error("로그인 정보가 없습니다.");
-        alert("로그인이 필요합니다.");
+        console.error('로그인 정보가 없습니다.');
+        alert('로그인이 필요합니다.');
         return;
       }
 
@@ -62,19 +55,19 @@ const PostDetailModal = ({ postId, onClose }) => {
       };
 
       if (!post || !post.userId) {
-        console.error("작성자 정보가 없습니다.");
-        alert("채팅 상대 정보를 불러올 수 없습니다.");
+        console.error('작성자 정보가 없습니다.');
+        alert('채팅 상대 정보를 불러올 수 없습니다.');
         return;
       }
 
       const response = await fetch(
         `http://localhost:8080/api/chatroom/create?user1Id=${user.id}&user2Id=${post.userId}`,
         {
-          method: "POST",
+          method: 'POST',
         }
       );
 
-      if (!response.ok) throw new Error("채팅방 생성 실패");
+      if (!response.ok) throw new Error('채팅방 생성 실패');
 
       const { id: chatRoomId } = await response.json();
       navigate(`/chatting/${chatRoomId}`);
