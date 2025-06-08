@@ -1,25 +1,73 @@
+.detail-modal-backdrop {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.18);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.detail-modal {
+  background: #fff;
+  padding: 0px 20px 18px 20px;
+  border-radius: 20px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  width: 350px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.detail-item .label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 2px;
+}
+
+.content-text {
+  font-size: 16px;
+  color: #333;
+  white-space: pre-wrap;
+}
+
 .detail-modal-btns {
   display: flex;
   gap: 10px;
-  margin-top: 14px;
-  justify-content: flex-end;
+  margin-top: 16px;
 }
 
 .modal-btn {
-  width: 100px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex: 1;
+  padding: 10px 0;
   font-size: 16px;
   font-weight: 600;
   border-radius: 12px;
   border: none;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .gray-btn {
   background: #f3f3f3;
   color: #444;
   border: 1.5px solid #ddd;
+}
+
+.primary {
+  background: #fc703b;
+  color: white;
 }
