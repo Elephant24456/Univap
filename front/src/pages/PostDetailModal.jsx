@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
-import exitIcon from '../assets/exit.png'; // 경로 확인
+import exitIcon from '../assets/exit.png'; // 닫기 아이콘
 import './PostDetailModal.css';
 
 const PostDetailModal = ({ postId, onClose }) => {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const myNickname = localStorage.getItem('nickname');
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -32,11 +34,17 @@ const PostDetailModal = ({ postId, onClose }) => {
     navigate(`/chat/${postId}`);
   };
 
-  if (loading) return <div className="detail-modal-backdrop">로딩 중...</div>;
-  if (!post)
+  if (loading) {
+    return <div className="detail-modal-backdrop">로딩 중...</div>;
+  }
+
+  if (!post) {
     return (
       <div className="detail-modal-backdrop">글을 불러올 수 없습니다.</div>
     );
+  }
+
+  const isMine = post.nickname === myNickname;
 
   return (
     <div className="detail-modal-backdrop">
@@ -51,6 +59,7 @@ const PostDetailModal = ({ postId, onClose }) => {
           />
         </div>
         <h2 className="modal-title-text">{post.title}</h2>
+
         <div className="detail-item">
           <span className="label">약속 날짜</span>
           <span className="label-info">{post.date}</span>
@@ -67,14 +76,17 @@ const PostDetailModal = ({ postId, onClose }) => {
           <span className="label">내용</span>
           <p className="content-text">{post.content}</p>
         </div>
-        <div className="detail-modal-btns">
-          <Button
-            label="채팅"
-            onClick={handleChat}
-            variant="primary"
-            className="modal-btn"
-          />
-        </div>
+
+        {!isMine && (
+          <div className="detail-modal-btns">
+            <Button
+              label="채팅"
+              onClick={handleChat}
+              variant="primary"
+              className="modal-btn"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
