@@ -62,4 +62,4 @@ TRUNCATE TABLE chat_room;
 SET FOREIGN_KEY_CHECKS=1;
 
 
-UPDATE user SET password = '$2a$10$....' WHERE id = ...;
+UPDATE user SET password = '$2a$10$ldXz/aT57qHbGdEhHehes.JdxKsM5iRd.kILOarK0twSd7TsJwh.q' WHERE id = 4;

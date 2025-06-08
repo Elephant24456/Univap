@@ -31,8 +31,6 @@ public class Post {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private String nickname;
-
     @Column(name = "post_time", insertable = false, updatable = false)
     private LocalDateTime postTime;
 }

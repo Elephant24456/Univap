@@ -39,3 +39,6 @@ ALTER TABLE chat_message
 ALTER TABLE chat_message
     ADD CONSTRAINT FK_chat_message_sender_user
         FOREIGN KEY (sender_id) REFERENCES user(id);
+
+-- 6월 8일
+ALTER TABLE post DROP COLUMN nickname;
