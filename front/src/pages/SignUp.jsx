@@ -120,6 +120,7 @@ const SignUp = () => {
       });
 
       toast.success(res.data); // ex) "회원가입 성공"
+
       navigate('/home');
     } catch (error) {
       toast.error('회원가입 실패: ' + (error.response?.data || error.message));

@@ -13,7 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -82,12 +86,22 @@ public class ChatRoomService {
 
             ChatMessage lastMsg = room.getLastChatMsg();
 
+            String base64 = "";
+            try {
+                Path imgPath = Paths.get(otherUser.getImage());
+                byte[] bytes = Files.readAllBytes(imgPath);
+                base64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
+            }catch(Exception e) {
+                base64 = "";
+            }
+
             return ChatRoomSummaryDto.builder()
                     .chatRoomId(room.getId())
                     .otherUserId(otherUser.getId())
                     .otherUserName(otherUser.getNickname())
                     .lastMessage(lastMsg != null ? lastMsg.getContent() : "")
                     .lastMessageTime(lastMsg != null ? lastMsg.getTimestamp() : null)
+                    .profileImage(base64)
                     .build();
         }).toList();
     }
