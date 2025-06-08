@@ -1,73 +1,83 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom'; // location 사용
 import Header from '../components/Header';
 import BottomNavBar from '../components/BottomNavBar';
 import './ChatList.css';
 
 const ChatList = () => {
+  const [nickname, setNickname] = useState('');
   const [chatData, setChatData] = useState([]);
   const [activeTab, setActiveTab] = useState('chatlist');
   const navigate = useNavigate();
+  const location = useLocation();
 
-<<<<<<< HEAD
-  //  닉네임 로컬스토리지에서 불러오기
+  // ✅ 닉네임을 localStorage에서 불러오고 상태에 반영
   useEffect(() => {
     const storedNickname = localStorage.getItem('nickname');
-    if (storedNickname) {
-      setNickname(storedNickname);
-    } else {
-      setNickname('익명'); // 없을 경우 대체 텍스트
-    }
-=======
+    setNickname(storedNickname || '익명');
+  }, [location]); // location이 바뀔 때마다 최신 닉네임 반영
+
+  // ✅ 채팅방 목록 불러오기
   useEffect(() => {
     const fetchChatRooms = async () => {
       try {
         const userId = localStorage.getItem('id');
-        const response = await fetch(`http://localhost:8080/api/chatroom/summary/list?userId=${userId}`);
+        const response = await fetch(
+          `http://localhost:8080/api/chatroom/summary/list?userId=${userId}`
+        );
         const data = await response.json();
         setChatData(data);
       } catch (error) {
         console.error('채팅방 목록 불러오기 실패', error);
       }
     };
-
     fetchChatRooms();
->>>>>>> a1c36f1b299d001e050cecd65da4ca1da7cca798
   }, []);
 
+  // ✅ 닉네임 변경 함수 예시 (다른 컴포넌트에서 불러와 호출 가능)
+  const handleNicknameChange = (newNickname) => {
+    localStorage.setItem('nickname', newNickname);
+    setNickname(newNickname); // 상태도 업데이트
+  };
+
   return (
-      <>
-        <Header />
-        <div className="chat-list-container">
-          <div className="chat-list">
-            {chatData.length === 0 ? (
-                <p>채팅방이 없습니다.</p>
-            ) : (
-                chatData.map(chat => (
-                    <div
-                        key={chat.chatRoomId}
-                        className="chat-item"
-                        onClick={() => navigate(`/chatting/${chat.chatRoomId}`)}
-                    >
-                      <div className="chat-profile">
-                        <img src={chat.profileImage || 'default_profile_image_path'} alt={chat.otherUserName} />
-                      </div>
-                      <div className="chat-details">
-                        <div className="chat-header">
-                          <span className="chat-name">{chat.otherUserName}</span>
-                          <span className="chat-time">
-                      {chat.lastMessageTime ? new Date(chat.lastMessageTime).toLocaleString() : ''}
+    <>
+      <Header username={nickname} />
+      <div className="chat-list-container">
+        <div className="chat-list">
+          {chatData.length === 0 ? (
+            <p>채팅방이 없습니다.</p>
+          ) : (
+            chatData.map((chat) => (
+              <div
+                key={chat.chatRoomId}
+                className="chat-item"
+                onClick={() => navigate(`/chatting/${chat.chatRoomId}`)}
+              >
+                <div className="chat-profile">
+                  <img
+                    src={chat.profileImage || 'default_profile_image_path'}
+                    alt={chat.otherUserName}
+                  />
+                </div>
+                <div className="chat-details">
+                  <div className="chat-header">
+                    <span className="chat-name">{chat.otherUserName}</span>
+                    <span className="chat-time">
+                      {chat.lastMessageTime
+                        ? new Date(chat.lastMessageTime).toLocaleString()
+                        : ''}
                     </span>
-                        </div>
-                        <div className="chat-message">{chat.lastMessage}</div>
-                      </div>
-                    </div>
-                ))
-            )}
-          </div>
+                  </div>
+                  <div className="chat-message">{chat.lastMessage}</div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
-        <BottomNavBar activeTab={activeTab} setActiveTab={setActiveTab} />
-      </>
+      </div>
+      <BottomNavBar activeTab={activeTab} setActiveTab={setActiveTab} />
+    </>
   );
 };
 
