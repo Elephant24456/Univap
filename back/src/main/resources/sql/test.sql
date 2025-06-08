@@ -63,3 +63,5 @@ SET FOREIGN_KEY_CHECKS=1;
 
 
 UPDATE user SET password = '$2a$10$ldXz/aT57qHbGdEhHehes.JdxKsM5iRd.kILOarK0twSd7TsJwh.q' WHERE id = 4;
+
+DELETE FROM chat_room_members WHERE chat_room_id = '44f0ba5f-b899-48a1-8d1c-a7ea52f89889';
