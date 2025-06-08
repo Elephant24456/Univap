@@ -84,7 +84,7 @@ public class UserController {
         user.setImage("");
 
         userRepository.save(user);
-        return ResponseEntity.ok(Map.of("success", true, "message", "회원가입 성공"));
+        return ResponseEntity.ok(Map.of("success", true, "message", "회원가입이 완료되었습니다."));
     }
 
     @PutMapping("/me")
