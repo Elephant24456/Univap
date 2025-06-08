@@ -28,6 +28,23 @@ const Chat = () => {
   }, [messages]);
 
   useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/chatroom/${chatRoomId}/messages`);
+        if (!response.ok) throw new Error('메시지 불러오기 실패');
+        const data = await response.json();
+        setMessages(data);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+
+    if (chatRoomId) {
+      fetchMessages();
+    }
+  }, [chatRoomId]);
+
+  useEffect(() => {
     let unsubscribe;
 
     webSocketService.connect(username, () => {
