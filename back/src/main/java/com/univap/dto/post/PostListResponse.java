@@ -22,7 +22,7 @@ public class PostListResponse {
         PostListResponse dto = new PostListResponse();
         dto.id = post.getId();
         dto.title = post.getTitle();
-        dto.nickname = post.getNickname();
+        dto.nickname = post.getUser().getNickname();
         dto.location = post.getLocation();
         dto.date = post.getDate();
         dto.time = post.getTime();

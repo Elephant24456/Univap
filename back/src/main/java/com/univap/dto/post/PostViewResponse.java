@@ -22,7 +22,7 @@ public class PostViewResponse {
     public PostViewResponse(Post post){
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.nickname = post.getNickname();
+        this.nickname = post.getUser().getNickname();
         this.date = post.getDate();
         this.time = post.getTime();
         this.location = post.getLocation();
