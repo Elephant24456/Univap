@@ -1,13 +1,13 @@
-import { Client } from "@stomp/stompjs";
-import SockJS from "sockjs-client";
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 
 const MessageType = {
-  CHAT: "CHAT",
-  JOIN: "JOIN",
-  LEAVE: "LEAVE",
+  CHAT: 'CHAT',
+  JOIN: 'JOIN',
+  LEAVE: 'LEAVE',
 };
 
-const websocketUrl = "http://localhost:8081/ws";
+const websocketUrl = 'http://localhost:8080/ws';
 
 class WebSocketService {
   constructor() {
@@ -31,7 +31,7 @@ class WebSocketService {
     if (!this.client) return;
 
     this.client.activate();
-    localStorage.setItem("chat_username", username);
+    localStorage.setItem('chat_username', username);
   }
 
   disconnect() {
@@ -50,19 +50,19 @@ class WebSocketService {
 
   sendMessage(message) {
     if (!this.client || !this.client.connected) {
-      console.error("WebSocket is not connected");
+      console.error('WebSocket is not connected');
       return;
     }
 
     this.client.publish({
-      destination: "/app/chat.sendMessage",
+      destination: '/app/chat.sendMessage',
       body: JSON.stringify(message),
     });
   }
 
   joinChat(username) {
     if (!this.client || !this.client.connected) {
-      console.error("WebSocket is not connected");
+      console.error('WebSocket is not connected');
       return;
     }
 
@@ -73,23 +73,23 @@ class WebSocketService {
     };
 
     this.client.publish({
-      destination: "/app/chat.addUser",
+      destination: '/app/chat.addUser',
       body: JSON.stringify(message),
     });
   }
 
   onConnect() {
-    console.log("Connected to WebSocket");
+    console.log('Connected to WebSocket');
 
-    const username = localStorage.getItem("chat_username");
+    const username = localStorage.getItem('chat_username');
 
     if (username) {
-      this.client.subscribe("/topic/public", (message) => {
+      this.client.subscribe('/topic/public', (message) => {
         try {
           const chatMessage = JSON.parse(message.body);
           this.messageCallbacks.forEach((callback) => callback(chatMessage));
         } catch (e) {
-          console.error("Error parsing message", e);
+          console.error('Error parsing message', e);
         }
       });
 
@@ -98,7 +98,7 @@ class WebSocketService {
   }
 
   onStompError(frame) {
-    console.error("STOMP error", frame);
+    console.error('STOMP error', frame);
   }
 }
 
