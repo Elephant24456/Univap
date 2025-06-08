@@ -1,12 +1,12 @@
-import React from 'react';
-import './BottomNavBar.css';
-import homeGray from '../assets/home-gray.png';
-import homeOrange from '../assets/home-orange.png';
-import chatGray from '../assets/chat-gray.png';
-import chatOrange from '../assets/chat-orange.png';
-import profileGray from '../assets/profile-gray.png';
-import profileOrange from '../assets/profile-orange.png';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import "./BottomNavBar.css";
+import homeGray from "../assets/home-gray.png";
+import homeOrange from "../assets/home-orange.png";
+import chatGray from "../assets/chat-gray.png";
+import chatOrange from "../assets/chat-orange.png";
+import profileGray from "../assets/profile-gray.png";
+import profileOrange from "../assets/profile-orange.png";
+import { useNavigate } from "react-router-dom";
 
 const BottomNavBar = ({ activeTab, setActiveTab }) => {
   const navigate = useNavigate();
@@ -14,14 +14,14 @@ const BottomNavBar = ({ activeTab, setActiveTab }) => {
   return (
     <nav className="bottom-nav">
       <button
-        className={activeTab === 'home' ? 'active' : ''}
+        className={activeTab === "home" ? "active" : ""}
         onClick={() => {
-          setActiveTab('home');
-          navigate('/home');
+          setActiveTab("home");
+          navigate("/home");
         }}
       >
         <img
-          src={activeTab === 'home' ? homeOrange : homeGray}
+          src={activeTab === "home" ? homeOrange : homeGray}
           alt="홈"
           className="nav-icon"
         />
@@ -29,14 +29,14 @@ const BottomNavBar = ({ activeTab, setActiveTab }) => {
       </button>
 
       <button
-        className={activeTab === 'chat' ? 'active' : ''}
+        className={activeTab === "chatlist" ? "active" : ""}
         onClick={() => {
-          setActiveTab('chat');
-          navigate('/chat');
+          setActiveTab("chatlist");
+          navigate("/chatlist");
         }}
       >
         <img
-          src={activeTab === 'chat' ? chatOrange : chatGray}
+          src={activeTab === "chat" ? chatOrange : chatGray}
           alt="채팅"
           className="nav-icon"
         />
@@ -44,14 +44,14 @@ const BottomNavBar = ({ activeTab, setActiveTab }) => {
       </button>
 
       <button
-        className={activeTab === 'mypage' ? 'active' : ''}
+        className={activeTab === "mypage" ? "active" : ""}
         onClick={() => {
-          setActiveTab('mypage');
-          navigate('/myPage');
+          setActiveTab("mypage");
+          navigate("/myPage");
         }}
       >
         <img
-          src={activeTab === 'mypage' ? profileOrange : profileGray}
+          src={activeTab === "mypage" ? profileOrange : profileGray}
           alt="마이페이지"
           className="nav-icon"
         />
