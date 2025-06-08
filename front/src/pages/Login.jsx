@@ -5,9 +5,9 @@ import InputField from '../components/InputField';
 import './Login.css';
 import '../index.css';
 import logo from '../assets/logo-spork.png';
-import { FaRegEye } from 'react-icons/fa';
-import { FaRegEyeSlash } from 'react-icons/fa';
-import { GrPrevious } from 'react-icons/gr';
+
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import backIcon from '../assets/back.png';
 import toast from 'react-hot-toast';
 
 const Login = () => {
@@ -53,7 +53,8 @@ const Login = () => {
   return (
     <div className="page-layout login-container">
       {/* 뒤로가기 버튼 */}
-      <GrPrevious
+      <img
+        src={backIcon}
         alt="뒤로가기"
         className="back-button"
         onClick={() => navigate('/')}

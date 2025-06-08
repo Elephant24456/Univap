@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import InputField from '../components/InputField';
 import logo from '../assets/logo-spork.png';
-import openEye from '../assets/open-eye.png';
-import closeEye from '../assets/close-eye.png';
-import backIcon from '../assets/back.png';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+
+import { GrPrevious } from 'react-icons/gr';
 import './SignUp.css';
 import '../index.css';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -18,6 +19,9 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [univ, setUniv] = useState(''); // ✅ 대학교명 state 추가
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [isDuplicateNickname, setIsDuplicateNickname] = useState(null); // true/false/null
+  const [showNicknameMessage, setShowNicknameMessage] = useState(true);
 
   const [authCodeSent, setAuthCodeSent] = useState(false);
   const [authCode, setAuthCode] = useState('');
@@ -43,10 +47,10 @@ const SignUp = () => {
       });
 
       if (res.data.includes('이메일 인증 성공')) {
-        alert('이메일 인증 완료!');
+        toast.success('이메일 인증 완료!');
         setIsEmailVerified(true);
       } else {
-        alert('인증 실패: ' + res.data);
+        toast.error('인증 실패: ' + res.data);
       }
     } catch (error) {
       alert('인증 실패: ' + (error.response?.data || error.message));
@@ -55,12 +59,12 @@ const SignUp = () => {
 
   const handleSendAuthCode = async () => {
     if (!email) {
-      alert('이메일을 입력해주세요.');
+      toast.error('이메일을 입력해주세요.');
       return;
     }
 
     if (!univ) {
-      alert('대학교명을 입력해주세요.');
+      toast.error('대학교명을 입력해주세요.');
       return;
     }
 
@@ -88,12 +92,22 @@ const SignUp = () => {
 
   const handleSignUp = async () => {
     if (!nickname || !email || !password || !confirmPassword || !univ) {
-      alert('모든 항목을 입력해주세요.');
+      toast.error('모든 항목을 입력해주세요.');
+      return;
+    }
+
+    if (!isNicknameChecked) {
+      toast.error('닉네임 중복 확인을 해주세요.');
+      return;
+    }
+
+    if (isDuplicateNickname) {
+      toast.error('이미 사용 중인 닉네임입니다.');
       return;
     }
 
     if (password !== confirmPassword) {
-      alert('비밀번호가 일치하지 않습니다.');
+      toast.error('비밀번호가 일치하지 않습니다.');
       return;
     }
 
@@ -102,20 +116,43 @@ const SignUp = () => {
         email,
         password,
         nickname,
-        univ, // ✅ 대학교명 추가
+        univ,
       });
 
       alert(res.data); // ex) "회원가입 성공"
       navigate('/home');
     } catch (error) {
-      alert('회원가입 실패: ' + (error.response?.data || error.message));
+      toast.error('회원가입 실패: ' + (error.response?.data || error.message));
+    }
+  };
+
+  const handleCheckNickname = async () => {
+    if (!nickname) {
+      toast.error('닉네임을 입력해주세요.');
+      return;
+    }
+
+    try {
+      const res = await axios.get(
+        `http://localhost:8080/api/user/check-nickname?nickname=${encodeURIComponent(
+          nickname
+        )}`
+      );
+      setIsDuplicateNickname(res.data.exists); // true면 중복
+      setIsNicknameChecked(true);
+      setShowNicknameMessage(true); // 메시지 보여줌
+
+      // 3초 후 메시지 사라지게
+      setTimeout(() => setShowNicknameMessage(false), 2000);
+    } catch (error) {
+      toast.error('중복 확인 중 오류 발생: ' + error.message);
     }
   };
 
   return (
     <div className="page-layout sign-up-container">
-      <img
-        src={backIcon}
+      {/* 뒤로가기 버튼 */}
+      <GrPrevious
         alt="뒤로가기"
         className="back-button"
         onClick={() => navigate('/')}
@@ -124,11 +161,32 @@ const SignUp = () => {
       <h2 className="sign-up-title">회원가입</h2>
 
       <p>닉네임</p>
-      <InputField
-        value={nickname}
-        onChange={(e) => setNickname(e.target.value)}
-        placeholder="닉네임"
-      />
+      <div className="signup-auth">
+        <InputField
+          value={nickname}
+          onChange={(e) => {
+            setNickname(e.target.value);
+            setIsNicknameChecked(false); // 다시 입력하면 검사 상태 초기화
+          }}
+          placeholder="닉네임"
+        />
+        <Button
+          label="중복 확인"
+          onClick={handleCheckNickname}
+          variant="secondary"
+          className="input-check"
+        />
+      </div>
+      {isNicknameChecked &&
+        showNicknameMessage &&
+        isDuplicateNickname === false && (
+          <p className="success-message">사용 가능한 닉네임입니다</p>
+        )}
+      {isNicknameChecked &&
+        showNicknameMessage &&
+        isDuplicateNickname === true && (
+          <p className="error-message">이미 사용 중인 닉네임입니다</p>
+        )}
 
       <p>대학교명</p>
       <InputField
@@ -138,7 +196,7 @@ const SignUp = () => {
       />
 
       <p>이메일</p>
-      <div className="email-auth">
+      <div className="signup-auth">
         <InputField
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -148,7 +206,7 @@ const SignUp = () => {
           label="인증요청"
           onClick={handleSendAuthCode}
           variant="secondary"
-          className="num-check"
+          className="input-check"
         />
       </div>
 
@@ -178,11 +236,11 @@ const SignUp = () => {
         placeholder="비밀번호"
         type={showPassword ? 'text' : 'password'}
         icon={
-          <img
-            src={showPassword ? closeEye : openEye}
-            alt="비밀번호 보기"
-            className="password-toggle-icon"
-          />
+          showPassword ? (
+            <FaRegEyeSlash className="password-toggle-icon" />
+          ) : (
+            <FaRegEye className="password-toggle-icon" />
+          )
         }
         onIconClick={() => setShowPassword((prev) => !prev)}
       />
@@ -194,16 +252,21 @@ const SignUp = () => {
         placeholder="비밀번호 확인"
         type={showPassword ? 'text' : 'password'}
         icon={
-          <img
-            src={showPassword ? closeEye : openEye}
-            alt="비밀번호 보기"
-            className="password-toggle-icon"
-          />
+          showPassword ? (
+            <FaRegEyeSlash className="password-toggle-icon" />
+          ) : (
+            <FaRegEye className="password-toggle-icon" />
+          )
         }
         onIconClick={() => setShowPassword((prev) => !prev)}
       />
 
-      <Button label="회원가입" onClick={handleSignUp} variant="primary" />
+      <Button
+        label="회원가입"
+        onClick={handleSignUp}
+        variant="primary"
+        disabled={!isNicknameChecked || isDuplicateNickname}
+      />
     </div>
   );
 };
