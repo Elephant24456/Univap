@@ -63,13 +63,15 @@ const ChatList = () => {
                 <div className="chat-details">
                   <div className="chat-header">
                     <span className="chat-name">{chat.otherUserName}</span>
+                  </div>
+                  <div className="chat-body">
+                    <span className="chat-message">{chat.lastMessage}</span>
                     <span className="chat-time">
                       {chat.lastMessageTime
                         ? new Date(chat.lastMessageTime).toLocaleString()
                         : ""}
                     </span>
                   </div>
-                  <div className="chat-message">{chat.lastMessage}</div>
                 </div>
               </div>
             ))
