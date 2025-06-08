@@ -8,7 +8,6 @@ import axios from 'axios';
 import './Home.css';
 
 const Home = () => {
-  const API_URL = process.env.REACT_APP_API_URL;
   const [nickname, setNickname] = useState('');
   const [activeTab, setActiveTab] = useState('home');
   const [posts, setPosts] = useState([]);
@@ -31,7 +30,7 @@ const Home = () => {
   useEffect(() => {
     // ✅ 게시글 목록 불러오기
     axios
-      .get(`${API_URL}/api/post/list`)
+      .get(`http://localhost:8080/api/post/list`)
       .then((res) => {
         console.log('불러온 게시글 데이터:', res.data);
         setPosts(res.data);

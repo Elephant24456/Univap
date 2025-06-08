@@ -12,9 +12,6 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const SignUp = () => {
-
-  const API_URL = process.env.REACT_APP_API_URL;
-
   const navigate = useNavigate();
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
@@ -43,7 +40,7 @@ const SignUp = () => {
     }
 
     try {
-      const res = await axios.post(`${API_URL}/api/univ/verify`, {
+      const res = await axios.post(`http://localhost:8080/api/univ/verify`, {
         email,
         univName: univ,
         code: inputAuthCode,
@@ -72,7 +69,7 @@ const SignUp = () => {
     }
 
     try {
-      const res = await axios.post(`${API_URL}/api/univ/request`, {
+      const res = await axios.post(`http://localhost:8080/api/univ/request`, {
         email,
         univName: univ, // ← 수정
       });
@@ -115,7 +112,7 @@ const SignUp = () => {
     }
 
     try {
-      const res = await axios.post(`${API_URL}/api/user/signup`, {
+      const res = await axios.post(`http://localhost:8080/api/user/signup`, {
         email,
         password,
         nickname,
@@ -137,7 +134,7 @@ const SignUp = () => {
 
     try {
       const res = await axios.get(
-        `${API_URL}/api/user/check-nickname?nickname=${encodeURIComponent(
+        `http://localhost:8080/api/user/check-nickname?nickname=${encodeURIComponent(
           nickname
         )}`
       );

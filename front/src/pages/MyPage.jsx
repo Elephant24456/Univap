@@ -12,10 +12,6 @@ import './MyPage.css';
 import '../index.css';
 
 const MyPage = () => {
-
-  const API_URL = process.env.REACT_APP_API_URL;
-
-
   const [nickname, setNickname] = useState('');
   const [profileImage, setProfileImage] = useState('');
   const [activeTab, setActiveTab] = useState('mypage');
@@ -37,7 +33,7 @@ const MyPage = () => {
     setNickname(storedNickname);
     if (storedImage) setProfileImage(storedImage);
 
-    fetch(`${API_URL}/api/user/${storedId}/posts`)
+    fetch(`http://localhost:8080/api/user/${storedId}/posts`)
       .then((res) => res.json())
       .then((posts) => {
         setMyPosts(posts);
@@ -48,18 +44,21 @@ const MyPage = () => {
   // 글 수정 저장
   const handlePostUpdate = async (editedPost) => {
     try {
-      const res = await fetch(`${API_URL}/api/post/update/${editedPost.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: editedPost.title,
-          content: editedPost.content,
-          location: editedPost.location,
-          date: editedPost.date,
-          time: editedPost.time,
-          userId: localStorage.getItem('id'),
-        }),
-      });
+      const res = await fetch(
+        `http://localhost:8080/api/post/update/${editedPost.id}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: editedPost.title,
+            content: editedPost.content,
+            location: editedPost.location,
+            date: editedPost.date,
+            time: editedPost.time,
+            userId: localStorage.getItem('id'),
+          }),
+        }
+      );
       const result = await res.json();
       if (result.success) {
         setMyPosts(
@@ -101,11 +100,14 @@ const MyPage = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await fetch(`${API_URL}/api/post/delete/${postId}`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: localStorage.getItem('id') }),
-        });
+        const res = await fetch(
+          `http://localhost:8080/api/post/delete/${postId}`,
+          {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: localStorage.getItem('id') }),
+          }
+        );
         const data = await res.json();
 
         if (data.success) {
@@ -130,7 +132,7 @@ const MyPage = () => {
     localStorage.setItem('nickname', newNickname);
 
     try {
-      const res = await fetch(`${API_URL}/api/user/me`, {
+      const res = await fetch(`http://localhost:8080/api/user/me`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, nickname: newNickname }),
@@ -153,7 +155,7 @@ const MyPage = () => {
     localStorage.setItem('profileImage', newImage);
 
     try {
-      const res = await fetch(`${API_URL}/api/user/me/image`, {
+      const res = await fetch(`http://localhost:8080/api/user/me/image`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, profileImage: newImage }),
