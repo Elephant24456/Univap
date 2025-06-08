@@ -53,8 +53,8 @@ const Login = () => {
         navigate("/home");
       }
     } catch (error) {
-      console.error("🚨 서버 연결 실패:", error);
-      alert("서버와 연결할 수 없습니다.");
+      console.error('🚨 서버 연결 실패:', error);
+      toast.error('서버와 연결할 수 없습니다.');
     }
   };
 
