@@ -1,83 +1,62 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import BottomNavBar from '../components/BottomNavBar';
 import './ChatList.css';
-import React, { useState, useEffect } from 'react';
 
 const ChatList = () => {
+  const [chatData, setChatData] = useState([]);
   const [activeTab, setActiveTab] = useState('chatlist');
-  const [nickname, setNickname] = useState('');
+  const navigate = useNavigate();
 
-  // ✅ 닉네임 로컬스토리지에서 불러오기
   useEffect(() => {
-    const userJson = localStorage.getItem('user');
-    if (userJson) {
+    const fetchChatRooms = async () => {
       try {
-        const user = JSON.parse(userJson);
-        if (user.nickname) {
-          setNickname(user.nickname);
-        }
-      } catch (e) {
-        console.error('유저 정보 파싱 오류:', e);
+        const userId = localStorage.getItem('id');
+        const response = await fetch(`http://localhost:8080/api/chatroom/summary/list?userId=${userId}`);
+        const data = await response.json();
+        setChatData(data);
+      } catch (error) {
+        console.error('채팅방 목록 불러오기 실패', error);
       }
-    }
+    };
+
+    fetchChatRooms();
   }, []);
 
-  // 임시 채팅방 데이터
-  const chatData = [
-    {
-      id: 1,
-      name: '홍길동',
-      message: '뭐먹음',
-      time: '오전 4:43',
-      date: '2025/03/31, 12:00',
-    },
-    {
-      id: 2,
-      name: '홍길동',
-      message: '뭘봐',
-      time: '오전 4:43',
-      date: '2025/03/31, 12:00',
-    },
-    {
-      id: 3,
-      name: '홍길동',
-      message: '수군수군수군',
-      time: '오전 4:43',
-      date: '2025/03/31, 12:00',
-    },
-    {
-      id: 4,
-      name: '홍길동',
-      message: '이야야야야ㅑ야야야',
-      time: '오전 4:43',
-      date: '2025/03/31, 12:00',
-    },
-  ];
-
   return (
-    <>
-      <Header username={nickname} />
-      <div className="chat-list-container">
-        <div className="chat-list">
-          {chatData.map((chat) => (
-            <div key={chat.id} className="chat-item">
-              <div className="chat-profile">
-                <img src="path_to_placeholder_image" alt={`${chat.name}`} />
-              </div>
-              <div className="chat-details">
-                <div className="chat-header">
-                  <span className="chat-name">{chat.name}</span>
-                  <span className="chat-time">{chat.time}</span>
-                </div>
-                <div className="chat-message">{chat.message}</div>
-                <div className="chat-date">약속 : {chat.date}</div>
-              </div>
-            </div>
-          ))}
+      <>
+        <Header />
+        <div className="chat-list-container">
+          <div className="chat-list">
+            {chatData.length === 0 ? (
+                <p>채팅방이 없습니다.</p>
+            ) : (
+                chatData.map(chat => (
+                    <div
+                        key={chat.chatRoomId}
+                        className="chat-item"
+                        onClick={() => navigate(`/chatting/${chat.chatRoomId}`)}
+                    >
+                      <div className="chat-profile">
+                        <img src={chat.profileImage || 'default_profile_image_path'} alt={chat.otherUserName} />
+                      </div>
+                      <div className="chat-details">
+                        <div className="chat-header">
+                          <span className="chat-name">{chat.otherUserName}</span>
+                          <span className="chat-time">
+                      {chat.lastMessageTime ? new Date(chat.lastMessageTime).toLocaleString() : ''}
+                    </span>
+                        </div>
+                        <div className="chat-message">{chat.lastMessage}</div>
+                      </div>
+                    </div>
+                ))
+            )}
+          </div>
         </div>
-      </div>
-      <BottomNavBar activeTab={activeTab} setActiveTab={setActiveTab} />
-    </>
+        <BottomNavBar activeTab={activeTab} setActiveTab={setActiveTab} />
+      </>
   );
 };
 
