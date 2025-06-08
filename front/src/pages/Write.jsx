@@ -87,7 +87,7 @@ const Write = () => {
           <hr />
         </div>
         <div className="input-group">
-          <label>날짜</label>
+          <label>약속 날짜</label>
           <input
             type="date"
             value={date}
@@ -95,7 +95,7 @@ const Write = () => {
           />
         </div>
         <div className="input-group">
-          <label>시간</label>
+          <label>약속 시간</label>
           <input
             type="time"
             value={time}
@@ -103,7 +103,7 @@ const Write = () => {
           />
         </div>
         <div className="input-group">
-          <label>장소</label>
+          <label>약속 장소</label>
           <input
             type="text"
             placeholder="장소를 입력해주세요"
@@ -118,6 +118,8 @@ const Write = () => {
             rows={6}
             value={content}
             onChange={(e) => setContent(e.target.value)}
+            maxLength={1000}
+            className="content-textarea"
           />
           <p className="rules">
             UniVap은 모두가 즐겁고 안전하게 사용할 수 있는 공간입니다.

@@ -83,3 +83,10 @@ textarea:focus {
   border: none;
   outline: none;
 }
+
+.content-text {
+  max-height: 100px; /* ✅ 또는 height: 150px; */
+  overflow-y: auto;
+  padding-right: 4px; /* 스크롤 여백 */
+  white-space: pre-wrap; /* 줄바꿈 유지 */
+}

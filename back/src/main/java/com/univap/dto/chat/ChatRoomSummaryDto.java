@@ -13,4 +13,5 @@ public class ChatRoomSummaryDto {
     private String otherUserName;
     private String lastMessage;
     private LocalDateTime lastMessageTime;
+    private String profileImage;
 }

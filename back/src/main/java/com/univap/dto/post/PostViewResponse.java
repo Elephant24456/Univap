@@ -24,7 +24,7 @@ public class PostViewResponse {
         this.userId = post.getUser().getId(); // 추가된 부분
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.nickname = post.getNickname();
+        this.nickname = post.getUser().getNickname();
         this.date = post.getDate();
         this.time = post.getTime();
         this.location = post.getLocation();

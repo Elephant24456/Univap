@@ -47,7 +47,6 @@ public class PostController {
         post.setLocation(request.getLocation());
         post.setContent(request.getContent());
         post.setUser(user);
-        post.setNickname(user.getNickname());
 
         try{
             postRepository.save(post);
