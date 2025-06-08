@@ -1,16 +1,23 @@
 .header {
+  position: fixed;
+  top: 0;
+  left: 50%; /* 화면 가로 중앙 기준 */
+  transform: translateX(-50%); /* 자기 너비의 절반만큼 왼쪽으로 이동 */
+  width: 100%;
+  max-width: 375px;
+  height: 60px;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 0 16px;
+  padding: 2px;
   font-size: 20px;
   font-weight: 600;
   color: #333;
-  height: 40px;
-  max-width: 375px;
-  width: 100%;
-  margin: 5px auto;
+  border-bottom: 1px solid #ccc;
+  background-color: #fff;
+  z-index: 1000;
 }
+
 .no-text-logo {
   width: 40px;
   height: 40px;
