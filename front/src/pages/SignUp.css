@@ -44,6 +44,34 @@ Button {
   color: #929292;
   border: 1px solid #929292;
 }
+.email-auth {
+  display: flex;
+  align-items: stretch; /* ← 높이 맞춰줌 */
+  gap: 8px; /* 버튼과 input 사이 간격 */
+  width: 100%;
+}
+
+.num-check {
+  margin-top: 0px;
+  height: 48px;
+  min-width: 100px;
+  padding: 0 16px;
+  font-size: 16px;
+  border-radius: 16px;
+  background-color: #fff;
+  color: #929292;
+  border: 1px solid #929292;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.num-check:disabled {
+  background-color: #f1f1f1;
+  color: #bbb;
+  cursor: not-allowed;
+}
 
 .back-button {
   margin-top: 10px;

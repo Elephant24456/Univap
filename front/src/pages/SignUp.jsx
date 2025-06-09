@@ -74,7 +74,6 @@ const SignUp = () => {
         univName: univ, // ← 수정
       });
 
-      toast(res.data.message);
       setAuthCodeSent(true);
     } catch (error) {
       if (error.response) {
@@ -119,9 +118,9 @@ const SignUp = () => {
         univ,
       });
 
-      toast.success(res.data.message || '회원가입이 완료되었습니다.');
+      toast.success(res.data); // ex) "회원가입 성공"
 
-      navigate('/home');
+      navigate('/login');
     } catch (error) {
       toast.error('회원가입 실패: ' + (error.response?.data || error.message));
     }
