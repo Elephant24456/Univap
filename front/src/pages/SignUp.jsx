@@ -118,7 +118,7 @@ const SignUp = () => {
         univ,
       });
 
-      toast.success(res.data); // ex) "회원가입 성공"
+      toast.success(res.data.message || '회원가입이 완료되었습니다.');
 
       navigate('/login');
     } catch (error) {
